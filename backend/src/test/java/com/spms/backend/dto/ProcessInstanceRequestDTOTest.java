@@ -25,7 +25,7 @@ class ProcessInstanceRequestDTOTest {
         ProcessInstanceRequest request = new ProcessInstanceRequest();
         
         String testDefinitionId = "test-def-id";
-        request.setDefinitionId(testDefinitionId);
+        request.setDefinitionId(1L);
         assertEquals(testDefinitionId, request.getDefinitionId());
 
         //String testBusinessKey = "test-key";
@@ -43,7 +43,7 @@ class ProcessInstanceRequestDTOTest {
         assertEquals(2, violations.size());
 
         // Test valid fields
-        request.setDefinitionId("def-id");
+        request.setDefinitionId(1L);
         request.setFormId(1L);
         violations = validator.validate(request);
         assertTrue(violations.isEmpty());
@@ -52,15 +52,15 @@ class ProcessInstanceRequestDTOTest {
     @Test
     void testEqualsAndHashCode() {
         ProcessInstanceRequest req1 = new ProcessInstanceRequest();
-        req1.setDefinitionId("def1");
+        req1.setDefinitionId(1L);
 
 
         ProcessInstanceRequest req2 = new ProcessInstanceRequest();
-        req2.setDefinitionId("def1");
+        req2.setDefinitionId(1L);
 
 
         ProcessInstanceRequest req3 = new ProcessInstanceRequest();
-        req3.setDefinitionId("def2");
+        req3.setDefinitionId(1L);
 
 
         assertEquals(req1, req2);
@@ -72,7 +72,7 @@ class ProcessInstanceRequestDTOTest {
     @Test
     void testToString() {
         ProcessInstanceRequest request = new ProcessInstanceRequest();
-        request.setDefinitionId("test-def");
+        request.setDefinitionId(1L);
         
         String toString = request.toString();
         assertTrue(toString.contains("test-def"));

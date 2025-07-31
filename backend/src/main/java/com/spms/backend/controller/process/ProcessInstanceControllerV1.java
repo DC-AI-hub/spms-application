@@ -2,12 +2,16 @@ package com.spms.backend.controller.process;
 
 import com.spms.backend.controller.BaseController;
 import com.spms.backend.controller.ProcessConverter;
+import com.spms.backend.controller.dto.process.ProcessActivityDTO;
 import com.spms.backend.controller.dto.process.ProcessInstanceDTO;
 import com.spms.backend.controller.dto.process.ProcessInstanceRequest;
 import com.spms.backend.controller.dto.process.TaskDTO;
+import com.spms.backend.converter.ProcessInstanceConvertor;
+import org.springframework.data.domain.Page;
 import com.spms.backend.service.exception.NotFoundException;
 import com.spms.backend.service.exception.SpmsRuntimeException;
 import com.spms.backend.service.idm.UserService;
+import com.spms.backend.service.model.process.ProcessActivityModel;
 import com.spms.backend.service.model.process.ProcessInstanceModel;
 import com.spms.backend.service.model.process.TaskModel;
 import com.spms.backend.service.process.ProcessInstanceService;
@@ -32,7 +36,7 @@ public class ProcessInstanceControllerV1 extends BaseController {
     private UserService userService;
 
     @Autowired
-    private ProcessConverter processConverter;
+    private ProcessInstanceConvertor processInstanceConvertor;
 
     /**
      * Starts a new process instance
@@ -52,12 +56,8 @@ public class ProcessInstanceControllerV1 extends BaseController {
                     request.getFormVariable(),
                     request.getVariable()
             );
-            ProcessInstanceDTO dto = new ProcessInstanceDTO();
-            dto.setInstanceId(instance.getInstanceId());
-            dto.setDefinitionId(instance.getDefinitionId());
-            dto.setStatus(instance.getStatus());
-            dto.setStartTime(instance.getStartTime());
-            return ResponseEntity.ok(dto);
+            return ResponseEntity.ok(processInstanceConvertor.convertToProcessInstanceDTO(instance,true));
+
         } catch (NotFoundException e) {
             return ResponseEntity.notFound().build();
         } catch (SpmsRuntimeException e) {
@@ -76,24 +76,8 @@ public class ProcessInstanceControllerV1 extends BaseController {
     public ResponseEntity<ProcessInstanceDTO> getProcessInstance(@PathVariable String instanceId) {
         try {
             ProcessInstanceModel instance = processInstanceService.getInstanceStatus(instanceId);
-            ProcessInstanceDTO dto = new ProcessInstanceDTO();
-            dto.setInstanceId(instance.getInstanceId());
-            dto.setDefinitionId(instance.getDefinitionId());
-            dto.setStatus(instance.getStatus());
-            dto.setStartTime(instance.getStartTime());
-            dto.setEndTime(instance.getEndTime());
-            
-            List<TaskDTO> taskDTOs = instance.getActiveTasks().stream()
-                .map(task -> {
-                    TaskDTO taskDTO = new TaskDTO();
-                    taskDTO.setTaskId(task.getTaskId());
-                    taskDTO.setName(task.getName());
-                    taskDTO.setAssignee(task.getAssignee());
-                    return taskDTO;
-                })
-                .toList();
-            dto.setActiveTasks(taskDTOs);
-            
+            ProcessInstanceDTO dto =  processInstanceConvertor
+                    .convertToProcessInstanceDTO(instance,true);
             return ResponseEntity.ok(dto);
         } catch (NotFoundException e) {
             return ResponseEntity.notFound().build();
@@ -116,17 +100,89 @@ public class ProcessInstanceControllerV1 extends BaseController {
         try {
             List<TaskModel> models = processInstanceService.getInstanceTasks(instanceId);
             List<TaskDTO> dtos = models.stream()
-                    .map(model -> {
-                        TaskDTO dto = new TaskDTO();
-                        dto.setTaskId(model.getTaskId());
-                        dto.setName(model.getName());
-                        dto.setAssignee(model.getAssignee());
-                        return dto;
-                    })
+                    .map(processInstanceConvertor::convertToTaskDTO)
                     .toList();
             return ResponseEntity.ok(dtos);
         } catch (NotFoundException e) {
             return ResponseEntity.notFound().build();
+        }
+    }
+
+    /**
+     * Retrieves paginated activity history for a process instance.
+     * 
+     * @param instanceId ID of the process instance
+     * @param pageable pagination configuration
+     * @return page of ProcessActivityDTO objects
+     */
+    @GetMapping("/{instanceId}/activities")
+    public ResponseEntity<Page<ProcessActivityDTO>> getProcessActivities(
+            @PathVariable String instanceId,
+            Pageable pageable) {
+        try {
+            Page<ProcessActivityModel> activityPage = processInstanceService.getProcessActivities(instanceId, pageable);
+            Page<ProcessActivityDTO> dtoPage = activityPage.map(model -> {
+                ProcessActivityDTO dto = new ProcessActivityDTO();
+                dto.setId(model.getId());
+                dto.setProcessInstanceId(model.getProcessInstanceId());
+                dto.setProcessDefinitionId(model.getProcessDefinitionId());
+                dto.setStartTime(model.getStartTime());
+                dto.setEndTime(model.getEndTime());
+                dto.setDurationInMillis(model.getDurationInMillis());
+                dto.setActivityId(model.getActivityId());
+                dto.setActivityName(model.getActivityName());
+                dto.setActivityType(model.getActivityType());
+                dto.setAssignee(model.getAssignee());
+                return dto;
+            });
+            return ResponseEntity.ok(dtoPage);
+        } catch (NotFoundException | SpmsRuntimeException e) {
+            return ResponseEntity.badRequest().build();
+        }
+    }
+    
+    /**
+     * Counts active (incomplete) tasks across all process instances.
+     * 
+     * @return count of incomplete tasks
+     */
+    @GetMapping("/stats/incomplete-tasks")
+    public ResponseEntity<Long> countIncompleteTasks() {
+        try {
+            long count = processInstanceService.countIncompleteTasks();
+            return ResponseEntity.ok(count);
+        } catch (SpmsRuntimeException e) {
+            return ResponseEntity.badRequest().build();
+        }
+    }
+    
+    /**
+     * Counts completed tasks across all process instances.
+     * 
+     * @return count of completed tasks
+     */
+    @GetMapping("/stats/completed-tasks")
+    public ResponseEntity<Long> countCompletedTasks() {
+        try {
+            long count = processInstanceService.countCompletedTasks();
+            return ResponseEntity.ok(count);
+        } catch (SpmsRuntimeException e) {
+            return ResponseEntity.badRequest().build();
+        }
+    }
+    
+    /**
+     * Counts currently active (running) process instances.
+     * 
+     * @return count of active process instances
+     */
+    @GetMapping("/stats/running-processes")
+    public ResponseEntity<Long> countRunningProcesses() {
+        try {
+            long count = processInstanceService.countRunningProcesses();
+            return ResponseEntity.ok(count);
+        } catch (SpmsRuntimeException e) {
+            return ResponseEntity.badRequest().build();
         }
     }
 
@@ -197,7 +253,9 @@ public class ProcessInstanceControllerV1 extends BaseController {
                     dto.setStatus(model.getStatus());
                     dto.setStartTime(model.getStartTime());
                     dto.setEndTime(model.getEndTime());
-                    
+                    dto.setBusinessKey(model.getBusinessKey());
+                    dto.setDeploymentId(model.getDeploymentId());
+                    dto.setContextValue(model.getContextValue());
                     List<TaskDTO> taskDTOs = model.getActiveTasks().stream()
                         .map(task -> {
                             TaskDTO taskDTO = new TaskDTO();
@@ -237,6 +295,7 @@ public class ProcessInstanceControllerV1 extends BaseController {
                     dto.setStatus(model.getStatus());
                     dto.setStartTime(model.getStartTime());
                     dto.setEndTime(model.getEndTime());
+                    dto.setBusinessKey(model.getBusinessKey());
                     
                     List<TaskDTO> taskDTOs = model.getActiveTasks().stream()
                         .map(task -> {

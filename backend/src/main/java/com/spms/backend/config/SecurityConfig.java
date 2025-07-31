@@ -85,8 +85,7 @@ public class SecurityConfig {
                         .successHandler(new AuthenticationSuccessHandler() {
                             @Override
                             public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
-                                System.out.println(request.getRequestURI());
-                                response.sendRedirect("http://localhost:5173/");
+                                response.sendRedirect("/spms");
                             }
                         })
                 ).oidcLogout(c ->

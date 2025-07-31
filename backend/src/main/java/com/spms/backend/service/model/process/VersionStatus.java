@@ -4,5 +4,6 @@ public enum VersionStatus {
     DRAFT,
     ACTIVE,
     INACTIVE,
-    DEPLOYED
+    DEPLOYED,
+    DEPRECATED
 }

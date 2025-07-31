@@ -102,8 +102,6 @@ public class SystemController extends BaseController {
             info.setRoles(((List<String>) user.getUserInfo().getClaims().get("roles")).stream()
                     .map(a -> new Role(a.toUpperCase()))
                     .collect(Collectors.toList()));
-            List<Role> roleList = new ArrayList<>();
-            info.setRoles(roleList);
             info.setUserType(user.getAuthenticatedUser().getType().name());
         }
         return info;

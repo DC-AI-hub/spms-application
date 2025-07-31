@@ -5,12 +5,14 @@ import com.spms.backend.service.BaseModel;
 import com.spms.backend.service.idm.UserModelFulfilledSupporter;
 import com.spms.backend.service.model.idm.UserModel;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import org.apache.commons.lang3.NotImplementedException;
 
 import java.util.Date;
 import java.util.List;
 
 @Data
+@EqualsAndHashCode(callSuper=false)
 public class ProcessDefinitionModel extends BaseModel<ProcessDefinitionEntity> {
 
     private Long id;

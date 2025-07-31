@@ -1,5 +1,7 @@
 package com.spms.backend.service.process.impl;
 
+import com.spms.backend.service.idm.UserService;
+import com.spms.backend.service.model.idm.UserModel;
 import com.spms.backend.service.process.ProcessHistoryService;
 import com.spms.backend.service.model.process.ProcessHistoryModel;
 import org.flowable.engine.HistoryService;
@@ -23,9 +25,12 @@ public class ProcessHistoryServiceImpl implements ProcessHistoryService {
 
     private final HistoryService historyService;
 
+    private final UserService userService;
+
     @Autowired
-    public ProcessHistoryServiceImpl(HistoryService historyService) {
+    public ProcessHistoryServiceImpl(HistoryService historyService,UserService userService) {
         this.historyService = historyService;
+        this.userService= userService;
     }
 
     /**
@@ -36,11 +41,13 @@ public class ProcessHistoryServiceImpl implements ProcessHistoryService {
      * @return Page of process history models
      */
     @Override
-    public Page<ProcessHistoryModel> getHistoryStartedByUser(String userId, Pageable pageable) {
+    public Page<ProcessHistoryModel> getHistoryStartedByUser(Long userId, Pageable pageable) {
         logger.debug("Fetching process history started by user: {}, page: {}", userId, pageable);
-        
+
+        UserModel userModel = userService.getUserById(userId);
+
         HistoricProcessInstanceQuery query = historyService.createHistoricProcessInstanceQuery()
-                .startedBy(userId)
+                .variableValueEquals("initiator",userModel.getUsername())
                 .orderByProcessInstanceStartTime().desc();
 
         long total = query.count();
@@ -66,11 +73,12 @@ public class ProcessHistoryServiceImpl implements ProcessHistoryService {
      * @return Page of process history models
      */
     @Override
-    public Page<ProcessHistoryModel> getHistoryHandledByUser(String userId, Pageable pageable) {
+    public Page<ProcessHistoryModel> getHistoryHandledByUser(Long userId, Pageable pageable) {
         logger.debug("Fetching process history handled by user: {}, page: {}", userId, pageable);
-        
+        UserModel userModel = userService.getUserById(userId);
+
         HistoricProcessInstanceQuery query = historyService.createHistoricProcessInstanceQuery()
-                .involvedUser(userId)
+                .involvedUser(userModel.getUsername())
                 .orderByProcessInstanceStartTime().desc();
 
         long total = query.count();

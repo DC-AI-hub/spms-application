@@ -74,6 +74,9 @@ public class ProcessControllerV1 extends BaseController {
         return ResponseEntity.ok(dtos);
     }
 
+
+
+
     /**
      * Creates a new process definition version.
      * Initial status will be set to DRAFT.
@@ -204,10 +207,26 @@ public class ProcessControllerV1 extends BaseController {
     @GetMapping("/definitions/{definitionId}/versions")
     public ResponseEntity<Page<ProcessDefinitionVersionDTO>> getProcessDefinitionVersions(
             @PathVariable String definitionId,
+            @RequestParam(value = "include-bpmn", defaultValue = "false") boolean includeBpmn,
             Pageable pageable) {
         Page<ProcessVersionModel> models = processService.getDefinitionVersions(definitionId, pageable);
-        Page<ProcessDefinitionVersionDTO> dtos = models.map(processConverter::toProcessDefinitionVersionDTO);
+        Page<ProcessDefinitionVersionDTO> dtos = models.map(processConverter::toProcessDefinitionVersionDTO).map(x->{
+            if(!includeBpmn) {
+                x.setBpmnXml(null);
+            }
+            return  x;
+        });
         return ResponseEntity.ok(dtos);
+    }
+
+    @GetMapping("/definitions/deployments/{deployment-id}")
+    @Transactional
+    public ResponseEntity<ProcessDefinitionVersionDTO> createProcessDefinitionVersion(
+            @PathVariable("deployment-id") String deploymentId) {
+        Optional<ProcessVersionModel> versionModel = processService.getProcessVersionByDeploymentId(deploymentId);
+        return versionModel.map(ProcessDefinitionVersionDTO::toProcessDefinitionVersionDTO)
+                .map(ResponseEntity::ok)
+                .orElseThrow(() -> new NotFoundException("Process Version Not found"));
     }
 
     /**
@@ -250,15 +269,7 @@ public class ProcessControllerV1 extends BaseController {
                 return ResponseEntity.notFound().build();
             }
             var model = result.get();
-            ProcessDefinitionVersionDTO dto = new ProcessDefinitionVersionDTO();
-            dto.setId(model.getId());
-            dto.setName(model.getName());
-            dto.setKey(model.getKey());
-            dto.setVersion(model.getVersion());
-            dto.setStatus(model.getStatus().name());
-            dto.setBpmnXml(model.getBpmnXml());
-            
-            return ResponseEntity.ok(dto);
+            return ResponseEntity.ok(ProcessDefinitionVersionDTO.toProcessDefinitionVersionDTO(model));
         } catch (Exception e) {
             return ResponseEntity.internalServerError().build();
         }

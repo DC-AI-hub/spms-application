@@ -10,7 +10,7 @@ import com.spms.backend.service.sys.notification.event.NotificationEvent;
 import com.spms.backend.service.sys.notification.exception.NotificationProcessingException;
 
 
-@Component
+//@Component
 public class EmailNotificationHandler implements NotificationHandler {
     private final JavaMailSender mailSender;
     private final NotificationTemplateManage templateManager;

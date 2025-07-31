@@ -76,4 +76,6 @@ public interface ProcessDefinitionService {
      * @return the total number of process definitions
      */
     long countProcessDefinitions();
+
+    Optional<ProcessVersionModel> getProcessVersionByDeploymentId(String deploymentId);
 }

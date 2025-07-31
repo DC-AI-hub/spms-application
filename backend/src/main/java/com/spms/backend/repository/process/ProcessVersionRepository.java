@@ -61,6 +61,14 @@ public interface ProcessVersionRepository extends JpaRepository<ProcessVersionEn
     Optional<ProcessVersionEntity> findByFlowableDefinitionId(String flowableDefinitionId);
 
     /**
+     * Finds a ProcessVersionEntity by its Flowable deployment ID.
+     *
+     * @param flowableDeploymentId the Flowable deployment ID
+     * @return an Optional containing the found ProcessVersionEntity, or empty if not found
+     */
+    Optional<ProcessVersionEntity> findByFlowableDeploymentId(String flowableDeploymentId);
+
+    /**
      * Finds process definitions with pagination and search support.
      *
      * @param search The search term to filter by name or key (optional)

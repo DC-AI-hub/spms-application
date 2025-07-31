@@ -73,7 +73,7 @@ public class ProcessDeploymentServiceImpl implements ProcessDeploymentService {
                 .toList();
             
             for (ProcessVersionEntity deployedVersion : deployedVersions) {
-                log.info("Undeploying version {} of process definition {} (ID: {})",
+                log.info("Un-deploying version {} of process definition {} (ID: {})",
                     deployedVersion.getVersion(), definition.getName(), definitionId);
                 deployedVersion.setStatus(ProcessVersionStatus.DEPRECATED);
                 deployedVersion.setUpdatedById(ownerId);
@@ -90,6 +90,7 @@ public class ProcessDeploymentServiceImpl implements ProcessDeploymentService {
                          definition.getName(), definitionId, version);
                 
                 RepositoryService repositoryService = flowableEngine.getRepositoryService();
+
 
                 if (entity.getStatus() == ProcessVersionStatus.DEPLOYED) {
                     log.error("Attempted to deploy version {} of process definition {} (ID: {}) which is already deployed", 
@@ -115,12 +116,13 @@ public class ProcessDeploymentServiceImpl implements ProcessDeploymentService {
                         .name(entity.getName())
                         .deploy();
 
+                //entity.setFlowableDefinitionId(deployment.get);
                 entity.setFlowableDeploymentId(deployment.getId());
                 entity.setStatus(ProcessVersionStatus.DEPLOYED);
                 entity.setDeployedToFlowable(true);
                 entity.setUpdatedById(ownerId);
                 processVersionRepository.save(entity);
-                
+
                 log.info("Successfully deployed process. Definition: {} (ID: {}), Version: {}, Deployment ID: {}", 
                          definition.getName(), definitionId, version, deployment.getId());
 
@@ -148,11 +150,11 @@ public class ProcessDeploymentServiceImpl implements ProcessDeploymentService {
                   definitionId, version, userId);
         
         if (version == null) {
-            log.warn("Undeployment failed: Version cannot be null");
+            log.warn("Un-deployment failed: Version cannot be null");
             throw new ValidationException("Version cannot be null or empty");
         }
         if (userId == null) {
-            log.warn("Undeployment failed: User ID cannot be null");
+            log.warn("Un-deployment failed: User ID cannot be null");
             throw new ValidationException("User ID cannot be null");
         }
 

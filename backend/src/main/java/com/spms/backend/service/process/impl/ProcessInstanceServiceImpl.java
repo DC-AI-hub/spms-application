@@ -13,27 +13,29 @@ import com.spms.backend.service.model.idm.UserModel;
 import com.spms.backend.service.model.process.ProcessInstanceModel;
 import com.spms.backend.service.model.process.TaskModel;
 import com.spms.backend.service.process.BusinessKeyGenerator;
-import com.spms.backend.service.process.ProcessDefinitionService;
 import com.spms.backend.service.process.ProcessInstanceService;
-import org.flowable.engine.HistoryService;
 import org.flowable.engine.ProcessEngine;
 import org.flowable.engine.RuntimeService;
 import org.flowable.engine.TaskService;
-import org.flowable.engine.history.HistoricProcessInstance;
-import org.flowable.engine.history.HistoricProcessInstanceQuery;
+import org.flowable.engine.runtime.ActivityInstance;
+import org.flowable.engine.runtime.ActivityInstanceQuery;
 import org.flowable.engine.runtime.ProcessInstance;
+import org.flowable.engine.runtime.ProcessInstanceQuery;
 import org.flowable.task.api.Task;
 import org.flowable.common.engine.api.FlowableObjectNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import com.spms.backend.service.mapper.ProcessActivityMapper;
+import com.spms.backend.service.mapper.ProcessInstanceMapper;
+import com.spms.backend.service.model.process.ProcessActivityModel;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -79,16 +81,19 @@ public class ProcessInstanceServiceImpl implements ProcessInstanceService {
     }
 
     /**
-     * 启动一个新的流程实例
+     * Starts a new process instance based on the given definition ID.
+     * 
+     * <p>Validates input parameters, retrieves the latest deployed version of the process definition,
+     * generates a business key, and initializes the process instance with context variables.</p>
      *
-     * @param definitionId 流程定义ID
-     * @param formId       表单ID（可选）
-     * @param formContext  表单上下文数据（可选）
-     * @param context      流程上下文数据（可选）
-     * @return ProcessInstanceModel 包含流程实例的详细信息
-     * @throws ValidationException  如果参数验证失败（如定义ID为空或用户ID为空）
-     * @throws NotFoundException    如果流程定义或版本未找到
-     * @throws SpmsRuntimeException 如果流程启动失败
+     * @param definitionId ID of the process definition to start
+     * @param formId ID of the associated form (optional)
+     * @param formContext form context data (optional)
+     * @param context process context data (optional)
+     * @return ProcessInstanceModel containing details of the started instance
+     * @throws ValidationException if definitionId is null or current user ID is null
+     * @throws NotFoundException if no deployed version exists for the definition
+     * @throws SpmsRuntimeException if process instance creation fails
      */
     @Override
     @Transactional
@@ -98,8 +103,8 @@ public class ProcessInstanceServiceImpl implements ProcessInstanceService {
             log.warn("Validation failed: Definition ID is null or empty");
             throw new ValidationException("Definition ID cannot be null or empty");
         }
-        Long userId = userService.getCurrentUserId();
-        if (userId == null) {
+        UserModel user = userService.getCurrentUser();
+        if (user == null) {
             log.warn("Validation failed: User ID is null for definitionId: {}", definitionId);
             throw new ValidationException("User ID cannot be null");
         }
@@ -131,9 +136,11 @@ public class ProcessInstanceServiceImpl implements ProcessInstanceService {
             ProcessInstance instance = runtimeService.createProcessInstanceBuilder()
                     .processDefinitionKey(processVersion.getKey())
                     .businessKey(businessKey)
-                    .variables(Map.of("initiator", userId.toString()))
+                    .owner(processDefinition.getOwnerId().toString())
+                    //.tenantId(processDefinition.getBusinessOwnerId().toString())
+                    .variables(Map.of("initiator", user.getUsername()))
+                    .transientVariables(Map.of("defId",processDefinition.getId()))
                     .start();
-
             log.info("Process instance started successfully: instanceId={}, definitionId={}",
                     instance.getId(), definitionId);
 
@@ -149,6 +156,20 @@ public class ProcessInstanceServiceImpl implements ProcessInstanceService {
         }
     }
 
+    /**
+     * Rejects a task in a process instance with specified rejection values.
+     * 
+     * <p>Validates input parameters, verifies task assignment, sets rejection variables,
+     * and triggers the rejection event in the BPMN engine.</p>
+     *
+     * @param instanceId ID of the process instance containing the task
+     * @param taskId ID of the task to reject
+     * @param userId ID of the user rejecting the task
+     * @param rejectValues map containing rejection data including mandatory 'rejectionReason'
+     * @throws ValidationException if parameters are invalid or rejectionReason is missing
+     * @throws NotFoundException if task is not found or not assigned to user
+     * @throws SpmsRuntimeException if task rejection operation fails
+     */
     @Override
     public void rejectTask(String instanceId, String taskId, Long userId, Map<String, Object> rejectValues) {
         log.info("Rejecting task: instanceId={}, taskId={}, userId={}", instanceId, taskId, userId);
@@ -170,11 +191,10 @@ public class ProcessInstanceServiceImpl implements ProcessInstanceService {
         try {
             TaskService taskService = flowableEngine.getTaskService();
             RuntimeService runtimeService = flowableEngine.getRuntimeService();
-            
+
             // Verify task exists and is assigned to user
             Task task = taskService.createTaskQuery()
                 .taskId(taskId)
-                .taskAssignee(userId.toString())
                 .singleResult();
             
             if (task == null) {
@@ -183,10 +203,11 @@ public class ProcessInstanceServiceImpl implements ProcessInstanceService {
 
             // Set rejection variables
             taskService.setVariables(taskId, rejectValues);
-            
+            runtimeService.setVariables(instanceId,rejectValues);
             // Trigger BPMN event
-            runtimeService.signalEventReceived("taskRejected", task.getExecutionId(), rejectValues);
-            
+            //runtimeService.signalEventReceived("taskRejected", task.getExecutionId(), rejectValues);
+            flowableEngine.getTaskService().complete(taskId,rejectValues);
+
             log.info("Task rejected successfully: taskId={}", taskId);
         } catch (FlowableObjectNotFoundException e) {
             throw new SpmsRuntimeException("Task or process instance not found", e);
@@ -195,6 +216,18 @@ public class ProcessInstanceServiceImpl implements ProcessInstanceService {
         }
     }
 
+    /**
+     * Completes a task in a process instance with the provided completion values.
+     * 
+     * <p>Validates input parameters and delegates task completion to the Flowable engine.</p>
+     *
+     * @param instanceId ID of the process instance containing the task
+     * @param taskId ID of the task to complete
+     * @param userId ID of the user completing the task
+     * @param completedValues map containing completion data
+     * @throws ValidationException if parameters are invalid
+     * @throws SpmsRuntimeException if task completion operation fails
+     */
     @Override
     @Transactional
     public void completeTask(String instanceId, String taskId, Long userId, Map<String, Object> completedValues) {
@@ -211,8 +244,9 @@ public class ProcessInstanceServiceImpl implements ProcessInstanceService {
         }
 
         try {
-            flowableEngine.getTaskService()
-                    .complete(taskId, completedValues);
+            //TODO: use form service as container
+            flowableEngine.getRuntimeService().setVariables(instanceId,completedValues);
+            flowableEngine.getTaskService().complete(taskId, completedValues);
             log.info("Task completed successfully: taskId={}", taskId);
         } catch (Exception e) {
             throw new SpmsRuntimeException("Failed to complete task", e);
@@ -220,27 +254,28 @@ public class ProcessInstanceServiceImpl implements ProcessInstanceService {
     }
 
     /**
-     * 获取所有流程实例的分页列表
-     *
-     * @param pageable 分页信息（页码、页大小、排序）
-     * @return 表示流程实例的 {@link ProcessInstanceModel} 对象列表
-     * @throws SpmsRuntimeException 如果检索过程中发生错误
+     * Retrieves a paginated list of all process instances.
+     * 
+     * @param pageable pagination configuration (page number, size, sorting)
+     * @return list of ProcessInstanceModel objects representing process instances
+     * @throws SpmsRuntimeException if an error occurs during retrieval
      */
     @Override
     public List<ProcessInstanceModel> getInstances(Pageable pageable) {
         log.debug("Fetching all process instances with pagination: {}", pageable);
         try {
-            HistoricProcessInstanceQuery query = flowableEngine.getHistoryService()
-                    .createHistoricProcessInstanceQuery()
-                    .orderByProcessInstanceStartTime().desc();
+            ProcessInstanceQuery query = flowableEngine.getRuntimeService()
+                    .createProcessInstanceQuery()
+                    .orderByStartTime()
+                    .desc();
 
-            List<HistoricProcessInstance> instances = query.listPage(
+            List<ProcessInstance> instances = query.listPage(
                     (int) pageable.getOffset(),
                     pageable.getPageSize()
             );
 
             return instances.stream()
-                    .map(this::toProcessInstanceModel)
+                    .map(x-> toProcessInstanceModel(x,new HashMap<>()))
                     .collect(Collectors.toList());
         } catch (Exception e) {
             log.error("Error fetching process instances", e);
@@ -249,24 +284,26 @@ public class ProcessInstanceServiceImpl implements ProcessInstanceService {
     }
 
     /**
-     * 获取与用户相关的流程实例分页列表（包括用户启动的流程实例和用户被分配任务的流程实例）
+     * Retrieves paginated list of process instances related to a user.
+     * 
+     * <p>Includes instances started by the user and instances where the user has assigned tasks.</p>
      *
-     * @param pageable 分页信息（页码、页大小、排序）
-     * @param user 用户模型对象
-     * @return 表示用户相关流程实例的 {@link ProcessInstanceModel} 对象列表
-     * @throws SpmsRuntimeException 如果检索过程中发生错误
+     * @param pageable pagination configuration
+     * @param user user model object
+     * @return list of ProcessInstanceModel objects related to the user
+     * @throws SpmsRuntimeException if an error occurs during retrieval
      */
     @Override
     public List<ProcessInstanceModel> getUserRelatedInstances(Pageable pageable, UserModel user) {
         log.debug("Fetching user-related process instances for user: {}", user.getId());
         try {
             String userId = user.getId().toString();
-            HistoryService historyService = flowableEngine.getHistoryService();
+            RuntimeService runtimeService = flowableEngine.getRuntimeService();
             TaskService taskService = flowableEngine.getTaskService();
 
             // 查询用户启动的流程实例
-            List<HistoricProcessInstance> startedProcesses = historyService
-                    .createHistoricProcessInstanceQuery()
+            List<ProcessInstance> startedProcesses = runtimeService
+                    .createProcessInstanceQuery()
                     .variableValueEquals("initiator", userId)
                     .list();
 
@@ -279,24 +316,24 @@ public class ProcessInstanceServiceImpl implements ProcessInstanceService {
                     .map(Task::getProcessInstanceId)
                     .collect(Collectors.toSet());
 
-            List<HistoricProcessInstance> taskProcesses = historyService
-                    .createHistoricProcessInstanceQuery()
+            List<ProcessInstance> taskProcesses = runtimeService
+                    .createProcessInstanceQuery()
                     .processInstanceIds(processInstanceIds)
                     .list();
 
             // 合并并去重
-            Set<HistoricProcessInstance> combined = new LinkedHashSet<>();
+            Set<ProcessInstance> combined = new LinkedHashSet<>();
             combined.addAll(startedProcesses);
             combined.addAll(taskProcesses);
 
             // 应用分页
-            List<HistoricProcessInstance> paginated = combined.stream()
+            List<ProcessInstance> paginated = combined.stream()
                     .skip(pageable.getOffset())
                     .limit(pageable.getPageSize())
                     .toList();
 
             return paginated.stream()
-                    .map(this::toProcessInstanceModel)
+                    .map(x->toProcessInstanceModel(x,new HashMap<>()))
                     .collect(Collectors.toList());
         } catch (Exception e) {
             log.error("Error fetching user-related process instances for user: {}", user.getId(), e);
@@ -305,10 +342,10 @@ public class ProcessInstanceServiceImpl implements ProcessInstanceService {
     }
 
     /**
-     * Counts the number of incomplete (active) tasks across all process instances.
-     *
-     * @return the count of incomplete tasks
-     * @throws SpmsRuntimeException if there's an error during the count operation
+     * Counts active (incomplete) tasks across all process instances.
+     * 
+     * @return count of incomplete tasks
+     * @throws SpmsRuntimeException if an error occurs during counting
      */
     @Override
     public long countIncompleteTasks() {
@@ -321,10 +358,10 @@ public class ProcessInstanceServiceImpl implements ProcessInstanceService {
     }
 
     /**
-     * Counts the number of completed tasks across all process instances.
-     *
-     * @return the count of completed tasks
-     * @throws SpmsRuntimeException if there's an error during the count operation
+     * Counts completed tasks across all process instances.
+     * 
+     * @return count of completed tasks
+     * @throws SpmsRuntimeException if an error occurs during counting
      */
     @Override
     public long countCompletedTasks() {
@@ -337,10 +374,10 @@ public class ProcessInstanceServiceImpl implements ProcessInstanceService {
     }
 
     /**
-     * Counts the number of currently running process instances.
-     *
-     * @return the count of active process instances
-     * @throws SpmsRuntimeException if there's an error during the count operation
+     * Counts currently active (running) process instances.
+     * 
+     * @return count of active process instances
+     * @throws SpmsRuntimeException if an error occurs during counting
      */
     @Override
     public long countRunningProcesses() {
@@ -353,13 +390,12 @@ public class ProcessInstanceServiceImpl implements ProcessInstanceService {
     }
 
     /**
-     * 获取指定流程实例的状态信息。
-     *
-     * @param instanceId 流程实例的唯一标识符。
-     * @return 包含流程实例状态信息的 {@link ProcessInstanceModel} 对象。
-     * @throws ValidationException 如果实例ID为空或无效。
-     * @throws NotFoundException   如果找不到对应的流程实例。
-     * @apiNote 此方法会查询流程引擎的历史服务，获取流程实例的详细信息，包括状态（ACTIVE 或 COMPLETED）、开始时间、结束时间（如果存在）以及当前活动任务。
+     * Retrieves status information for a specific process instance.
+     * 
+     * @param instanceId unique identifier of the process instance
+     * @return ProcessInstanceModel containing status details
+     * @throws ValidationException if instanceId is null or empty
+     * @throws NotFoundException if no process instance matches the ID
      */
     @Override
     @Transactional
@@ -370,8 +406,8 @@ public class ProcessInstanceServiceImpl implements ProcessInstanceService {
             throw new ValidationException("Instance ID cannot be null or empty");
         }
 
-        HistoricProcessInstance processInstance = flowableEngine.getHistoryService()
-                .createHistoricProcessInstanceQuery()
+        ProcessInstance processInstance = flowableEngine.getRuntimeService()
+                .createProcessInstanceQuery()
                 .processInstanceId(instanceId)
                 .singleResult();
 
@@ -379,34 +415,39 @@ public class ProcessInstanceServiceImpl implements ProcessInstanceService {
             log.error("Process instance not found: instanceId={}", instanceId);
             throw new NotFoundException("Process instance not found");
         }
+        var result = flowableEngine.getRuntimeService().getVariables(instanceId);
 
-        return toProcessInstanceModel(processInstance);
+        var model=  toProcessInstanceModel(processInstance,result);
+        return model;
     }
 
     /**
-     * 将 HistoricProcessInstance 转换为 ProcessInstanceModel
-     *
-     * @param instance 要转换的 HistoricProcessInstance 对象
-     * @return 转换后的 ProcessInstanceModel 对象
+     * Converts a ProcessInstance object to a ProcessInstanceModel object.
+     * 
+     * @param instance ProcessInstance to convert
+     * @return converted ProcessInstanceModel
      */
-    private ProcessInstanceModel toProcessInstanceModel(HistoricProcessInstance instance) {
+    //TODO: migrate to a standalone class
+    private ProcessInstanceModel toProcessInstanceModel(ProcessInstance instance, Map<String,Object> context) {
         String instanceId = instance.getId();
         return ProcessInstanceModel.builder()
                 .instanceId(instanceId)
                 .definitionId(instance.getProcessDefinitionId())
-                .status(instance.getEndTime() == null ? "ACTIVE" : "COMPLETED")
                 .startTime(instance.getStartTime().getTime())
-                .endTime(instance.getEndTime() != null ? instance.getEndTime().getTime() : null)
                 .activeTasks(getInstanceTasks(instanceId))
+                .setBusinessKey(instance.getBusinessKey())
+                .setDeploymentId(instance.getDeploymentId())
+                .status(instance.getBusinessStatus())
+                .setContextValue(context)
                 .build();
     }
 
     /**
-     * 根据流程实例ID获取该实例的所有任务。
-     *
-     * @param instanceId 流程实例的唯一标识符，不能为null或空字符串。
-     * @return 包含任务信息的列表，每个任务包括任务ID、名称和分配人。
-     * @throws ValidationException 如果instanceId为null或空字符串，抛出此异常。
+     * Retrieves all tasks for a specific process instance.
+     * 
+     * @param instanceId ID of the process instance (cannot be null or empty)
+     * @return list of TaskModel objects containing task information
+     * @throws ValidationException if instanceId is null or empty
      */
     @Override
     public List<TaskModel> getInstanceTasks(String instanceId) {
@@ -431,6 +472,76 @@ public class ProcessInstanceServiceImpl implements ProcessInstanceService {
 
         log.debug("Found {} tasks for instance: instanceId={}", taskModels.size(), instanceId);
         return taskModels;
+    }
+
+    /**
+     * Retrieves paginated activity history for a process instance.
+     * 
+     * @param processInstanceId ID of the process instance
+     * @param pageable pagination configuration
+     * @return page of ProcessActivityModel objects
+     * @throws NotFoundException if process instance not found
+     * @throws SpmsRuntimeException if an error occurs during retrieval
+     */
+    @Override
+    public Page<ProcessActivityModel> getProcessActivities(String processInstanceId, Pageable pageable)
+            throws NotFoundException, SpmsRuntimeException {
+        log.debug("Getting activities for process instance: instanceId={}", processInstanceId);
+        if (processInstanceId == null || processInstanceId.isEmpty()) {
+            log.warn("Validation failed: Process instance ID is null or empty");
+            throw new ValidationException("Process instance ID cannot be null or empty");
+        }
+
+        try {
+            ActivityInstanceQuery query = flowableEngine.getRuntimeService()
+                    .createActivityInstanceQuery()
+                .processInstanceId(processInstanceId)
+                .orderByActivityInstanceStartTime()
+                .desc();
+
+            long total = query.count();
+            List<ActivityInstance> activities = query.listPage(
+                (int) pageable.getOffset(), 
+                pageable.getPageSize()
+            );
+
+            List<ProcessActivityModel> models = activities.stream()
+                .map(this::toProcessActivityModel)
+                .collect(Collectors.toList());
+
+            return new PageImpl<>(models, pageable, total);
+        } catch (Exception e) {
+            log.error("Error fetching activities for instance: {}", processInstanceId, e);
+            throw new SpmsRuntimeException("Failed to retrieve process activities", e);
+        }
+    }
+
+    /**
+     * Converts an ActivityInstance to a ProcessActivityModel.
+     * 
+     * @param activity ActivityInstance to convert
+     * @return converted ProcessActivityModel
+     */
+    //TODO: migrate to a standalone class
+    private ProcessActivityModel toProcessActivityModel(ActivityInstance activity) {
+        ProcessActivityModel model = new ProcessActivityModel();
+        model.setId(activity.getId());
+        model.setProcessInstanceId(activity.getProcessInstanceId());
+        model.setProcessDefinitionId(activity.getProcessDefinitionId());
+        model.setStartTime(activity.getStartTime());
+        model.setEndTime(activity.getEndTime());
+        model.setDurationInMillis(activity.getDurationInMillis());
+        model.setTransactionOrder(activity.getTransactionOrder());
+        model.setDeleteReason(activity.getDeleteReason());
+        model.setActivityId(activity.getActivityId());
+        model.setActivityName(activity.getActivityName());
+        model.setActivityType(activity.getActivityType());
+        model.setExecutionId(activity.getExecutionId());
+        model.setAssignee(activity.getAssignee());
+        model.setTaskId(activity.getTaskId());
+        model.setCalledProcessInstanceId(activity.getCalledProcessInstanceId());
+        model.setTenantId(activity.getTenantId());
+        return model;
     }
 
 

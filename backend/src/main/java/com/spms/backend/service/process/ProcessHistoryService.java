@@ -13,7 +13,7 @@ public interface ProcessHistoryService {
      * @param pageable Pagination information
      * @return Page of process history models
      */
-    Page<ProcessHistoryModel> getHistoryStartedByUser(String userId, Pageable pageable);
+    Page<ProcessHistoryModel> getHistoryStartedByUser(Long userId, Pageable pageable);
 
     /**
      * Retrieves a paginated history of processes handled by a specific user
@@ -22,6 +22,6 @@ public interface ProcessHistoryService {
      * @param pageable Pagination information
      * @return Page of process history models
      */
-    Page<ProcessHistoryModel> getHistoryHandledByUser(String userId, Pageable pageable);
+    Page<ProcessHistoryModel> getHistoryHandledByUser(Long userId, Pageable pageable);
 
 }

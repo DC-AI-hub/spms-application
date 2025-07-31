@@ -248,7 +248,7 @@ public class OrganizationServiceImpl implements OrganizationService {
 
     /**
      * Finds department head for Flowable UEL expressions
-     * organizationService.findUserDepartmentHead(${initiator},"LOCAL")
+     * ${organizationService.findUserDepartmentHead(${initiator},"LOCAL")}
      * @param userName username to lookup
      * @param line department line type ("FUNCTIONAL" or "LOCAL")
      * @return department head username or empty string

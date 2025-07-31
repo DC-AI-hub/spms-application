@@ -86,6 +86,8 @@ public class ProcessDefinitionServiceImpl implements ProcessDefinitionService {
                 .fulfill(x -> ProcessDefinitionModel.fromEntity(entity, x));
     }
 
+
+
     @Override
     public ProcessDefinitionModel getProcessDefinition(String definitionId) {
         try {
@@ -102,6 +104,15 @@ public class ProcessDefinitionServiceImpl implements ProcessDefinitionService {
     public Optional<ProcessVersionModel> getProcessDefinitionVersion(Long definitionId, String version) {
         Optional<ProcessVersionEntity> entity = processVersionRepository.findByProcessDefinitionIdAndVersion(definitionId, version);
         return entity.map(ProcessVersionModel::fromEntity);
+    }
+
+    public Optional<ProcessVersionModel> getProcessVersionByDeploymentId(String deploymentId) {
+
+        if (deploymentId == null || deploymentId.isEmpty()) {
+            throw new ValidationException("Definition ID cannot be null or empty");
+        }
+        return processVersionRepository.findByFlowableDeploymentId(deploymentId).map(ProcessVersionModel::fromEntity);
+
     }
 
     @Override
