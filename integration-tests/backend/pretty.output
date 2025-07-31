@@ -1,0 +1,94 @@
+Feature: Form API Endpoints # features/form_api.feature:1
+
+  Scenario: Create new form version                # features/form_api.feature:2
+    Given the form API is available                # features/step_definitions/form_steps.py:8
+    When I POST valid form data to "/api/v1/forms" # features/step_definitions/form_steps.py:16
+      Traceback (most recent call last):
+        File "/Users/user/Desktop/spms/spms-application/integration-tests/backend/venv/lib/python3.9/site-packages/urllib3/connection.py", line 198, in _new_conn
+          sock = connection.create_connection(
+        File "/Users/user/Desktop/spms/spms-application/integration-tests/backend/venv/lib/python3.9/site-packages/urllib3/util/connection.py", line 85, in create_connection
+          raise err
+        File "/Users/user/Desktop/spms/spms-application/integration-tests/backend/venv/lib/python3.9/site-packages/urllib3/util/connection.py", line 73, in create_connection
+          sock.connect(sa)
+      ConnectionRefusedError: [Errno 61] Connection refused
+      
+      The above exception was the direct cause of the following exception:
+      
+      Traceback (most recent call last):
+        File "/Users/user/Desktop/spms/spms-application/integration-tests/backend/venv/lib/python3.9/site-packages/urllib3/connectionpool.py", line 787, in urlopen
+          response = self._make_request(
+        File "/Users/user/Desktop/spms/spms-application/integration-tests/backend/venv/lib/python3.9/site-packages/urllib3/connectionpool.py", line 493, in _make_request
+          conn.request(
+        File "/Users/user/Desktop/spms/spms-application/integration-tests/backend/venv/lib/python3.9/site-packages/urllib3/connection.py", line 445, in request
+          self.endheaders()
+        File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/http/client.py", line 1252, in endheaders
+          self._send_output(message_body, encode_chunked=encode_chunked)
+        File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/http/client.py", line 1012, in _send_output
+          self.send(msg)
+        File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/http/client.py", line 952, in send
+          self.connect()
+        File "/Users/user/Desktop/spms/spms-application/integration-tests/backend/venv/lib/python3.9/site-packages/urllib3/connection.py", line 276, in connect
+          self.sock = self._new_conn()
+        File "/Users/user/Desktop/spms/spms-application/integration-tests/backend/venv/lib/python3.9/site-packages/urllib3/connection.py", line 213, in _new_conn
+          raise NewConnectionError(
+      urllib3.exceptions.NewConnectionError: <urllib3.connection.HTTPConnection object at 0x1118f0d90>: Failed to establish a new connection: [Errno 61] Connection refused
+      
+      The above exception was the direct cause of the following exception:
+      
+      Traceback (most recent call last):
+        File "/Users/user/Desktop/spms/spms-application/integration-tests/backend/venv/lib/python3.9/site-packages/requests/adapters.py", line 486, in send
+          resp = conn.urlopen(
+        File "/Users/user/Desktop/spms/spms-application/integration-tests/backend/venv/lib/python3.9/site-packages/urllib3/connectionpool.py", line 841, in urlopen
+          retries = retries.increment(
+        File "/Users/user/Desktop/spms/spms-application/integration-tests/backend/venv/lib/python3.9/site-packages/urllib3/util/retry.py", line 519, in increment
+          raise MaxRetryError(_pool, url, reason) from reason  # type: ignore[arg-type]
+      urllib3.exceptions.MaxRetryError: HTTPConnectionPool(host='localhost', port=8080): Max retries exceeded with url: /api/v1/api/v1/forms (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x1118f0d90>: Failed to establish a new connection: [Errno 61] Connection refused'))
+      
+      During handling of the above exception, another exception occurred:
+      
+      Traceback (most recent call last):
+        File "/Users/user/Desktop/spms/spms-application/integration-tests/backend/venv/lib/python3.9/site-packages/behave/model.py", line 1329, in run
+          match.run(runner.context)
+        File "/Users/user/Desktop/spms/spms-application/integration-tests/backend/venv/lib/python3.9/site-packages/behave/matchers.py", line 98, in run
+          self.func(context, *args, **kwargs)
+        File "/Users/user/Desktop/spms/spms-application/integration-tests/backend/features/step_definitions/form_steps.py", line 23, in step_impl
+          response = requests.post(
+        File "/Users/user/Desktop/spms/spms-application/integration-tests/backend/venv/lib/python3.9/site-packages/requests/api.py", line 115, in post
+          return request("post", url, data=data, json=json, **kwargs)
+        File "/Users/user/Desktop/spms/spms-application/integration-tests/backend/venv/lib/python3.9/site-packages/requests/api.py", line 59, in request
+          return session.request(method=method, url=url, **kwargs)
+        File "/Users/user/Desktop/spms/spms-application/integration-tests/backend/venv/lib/python3.9/site-packages/requests/sessions.py", line 589, in request
+          resp = self.send(prep, **send_kwargs)
+        File "/Users/user/Desktop/spms/spms-application/integration-tests/backend/venv/lib/python3.9/site-packages/requests/sessions.py", line 703, in send
+          r = adapter.send(request, **kwargs)
+        File "/Users/user/Desktop/spms/spms-application/integration-tests/backend/venv/lib/python3.9/site-packages/requests/adapters.py", line 519, in send
+          raise ConnectionError(e, request=request)
+      requests.exceptions.ConnectionError: HTTPConnectionPool(host='localhost', port=8080): Max retries exceeded with url: /api/v1/api/v1/forms (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x1118f0d90>: Failed to establish a new connection: [Errno 61] Connection refused'))
+
+    Then the response status should be 201         # None
+    And the response should contain form metadata  # None
+
+  Scenario: Get form version by ID                           # features/form_api.feature:8
+    Given a form version exists with ID "123"                # features/step_definitions/form_steps.py:32
+      Traceback (most recent call last):
+        File "/Users/user/Desktop/spms/spms-application/integration-tests/backend/venv/lib/python3.9/site-packages/behave/model.py", line 1329, in run
+          match.run(runner.context)
+        File "/Users/user/Desktop/spms/spms-application/integration-tests/backend/venv/lib/python3.9/site-packages/behave/matchers.py", line 98, in run
+          self.func(context, *args, **kwargs)
+        File "/Users/user/Desktop/spms/spms-application/integration-tests/backend/features/step_definitions/form_steps.py", line 41, in step_impl
+          f"{context.base_url}/forms",
+        File "/Users/user/Desktop/spms/spms-application/integration-tests/backend/venv/lib/python3.9/site-packages/behave/runner.py", line 321, in __getattr__
+          raise AttributeError(msg)
+      AttributeError: 'Context' object has no attribute 'base_url'
+
+    When I GET "/api/v1/forms/123"                           # None
+    Then the response status should be 200                   # None
+    And the response should contain the form version details # None
+
+  @wip
+  Scenario: Update form version                              # features/form_api.feature:15
+    Given a form version exists with ID "123"                # None
+    When I PUT updated data to "/api/v1/forms/123"           # None
+    Then the response status should be 200                   # None
+    And the response should contain the updated form version # None
+
