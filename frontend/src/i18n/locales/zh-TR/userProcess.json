@@ -1,8 +1,15 @@
 {
   "tabs": {
     "processDefinitions": "流程定義",
-    "processInstances": "我的實例",
-    "userTasks": "我的任務"
+    "processInstances": "我的流程實例",
+    "userTasks": "我的任務",
+    "processHistory": "流程歷史"
+  },
+  "processHistoryTable": {
+    "instanceId": "實例ID",
+    "startTime": "開始時間",
+    "endTime": "結束時間",
+    "businessKey": "業務鍵"
   },
   "processDefinitions": {
     "title": "流程定義",
@@ -25,7 +32,8 @@
       "processName": "流程名稱",
       "startTime": "開始時間",
       "currentStage": "當前階段",
-      "status": "狀態"
+      "status": "狀態",
+      "businessKey": "流程業務號"
     },
     "dialog": {
       "title": "實例 {{id}} 詳情",
@@ -58,7 +66,11 @@
       "priority": "優先級",
       "taskDetails": "任務詳情",
       "cancelButton": "取消",
-      "completeButton": "完成"
+      "completeButton": "完成",
+      "instanceId": "實例 ID",
+      "status": "狀態",
+      "startTime": "開始時間",
+      "noInstance": "無實例數據"
     },
     "declineDialog": {
       "title": "拒絕任務：{{title}}",
@@ -66,6 +78,13 @@
       "reasonLabel": "拒絕原因",
       "cancelButton": "取消",
       "confirmButton": "確認拒絕"
+    },
+    "errors": {
+      "fetchMetadataFailed": "無法獲取流程實例元數據",
+      "fetchActivitiesFailed": "無法獲取活動數據"
+    },
+    "processInstance": {
+      "title": "流程實例詳情"
     }
   }
 }

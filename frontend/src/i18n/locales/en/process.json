@@ -11,7 +11,44 @@
     "forms": "Forms Management",
     "versions": "Versions Management",
     "assignments": "Task Assignments",
-    "assignmentsComingSoon": "Assignments coming soon"
+    "assignmentsComingSoon": "Assignments coming soon",
+    "instances": "Instances"
+  },
+  "instances": {
+    "columns": {
+      "id": "ID",
+      "definitionId": "Definition ID",
+      "status": "Status",
+      "startTime": "Start Time",
+      "businessKey": "Business Key",
+      "actions": "Actions"
+    },
+    "dialog": {
+      "title": "Process Activities",
+      "noActivities": "No activities found"
+    }
+  },
+  "errors": {
+    "fetchInstancesFailed": "Failed to fetch process instances",
+    "fetchActivitiesFailed": "Failed to fetch process activities"
+  },
+  "activity": {
+    "startTime": "Start Time",
+    "endTime": "End Time",
+    "duration": "Duration",
+    "ongoing": "Ongoing"
+  },
+  "definition": {
+    "title": "Process Definition",
+    "name": "Name",
+    "key": "Key",
+    "version": "Version"
+  },
+  "instance": {
+    "title": "Instance Details",
+    "id": "ID",
+    "status": "Status",
+    "startTime": "Start Time"
   },
   "status": "Status",
   "lastModified": "Last Modified",
@@ -116,5 +153,17 @@
     "title": "Select Version to Activate",
     "createdAt": "Created At",
     "activate": "Activate this Version"
+  },
+  "processInstances": {
+    "dialog": {
+      "title": "Process Instance Details",
+      "activitiesTitle": "Activities",
+      "completedAt": "Completed at",
+      "inProgress": "In progress",
+      "noActivities": "No activities found",
+      "activeTasksTitle": "Active Tasks",
+      "closeButton": "Close"
+    },
+    "notCompleted": "Not completed"
   }
 }

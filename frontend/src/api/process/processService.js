@@ -161,6 +161,11 @@ const processService = {
       .catch(handleError);
   },
 
+  getProcessVersionByDeploymentId(deploymentId) {
+    return api.get(`/process/definitions/deployments/${deploymentId}`).then(handleResponse).catch(handleError);
+  },
+
+  //
   /**
    * Get specific version of a process definition
    * 
@@ -203,7 +208,22 @@ const processService = {
       .catch(handleError);
   },
 
-  
+  /**
+   * Starts a new process instance
+   * 
+   * @param {Object} data Instance request data:
+   * @param {string} data.definitionId - Process definition ID
+   * @param {string} [data.formId] - Optional form ID
+   * @param {Object} [data.formVariable] - Form variables
+   * @param {Object} [data.variable] - Additional process variables
+   * @returns {Promise<Object>} ProcessInstanceDTO
+   * @throws {Error} 404 if definition not found, 400 if process fails to start
+   */
+  startInstance(data) {
+    return api.post('/process/instances', data)
+      .then(handleResponse)
+      .catch(handleError);
+  },
 
   /**
    * Gets status of a process instance

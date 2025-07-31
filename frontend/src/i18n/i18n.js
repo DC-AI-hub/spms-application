@@ -36,6 +36,7 @@ import zhTrUserProcess from "./locales/zh-TR/userProcess.json";
 import zhTRAccess from './locales/zh-TR/access.json';
 import zhTRStat from "./locales/zh-TR/statistics.json"
 
+
 i18n
   .use(initReactI18next)
   .init({

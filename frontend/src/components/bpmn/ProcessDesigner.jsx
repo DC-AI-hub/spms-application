@@ -23,7 +23,7 @@ import configure from './configure.json';
  * @param {string} [props.initialXml] Initial BPMN XML to load
  * @param {Function} props.onChange Callback when XML changes
  */
-const ProcessDesigner = ({ ref, initialXml, onChange ,onfullScreen }) => {
+const ProcessDesigner = ({ initialXml, onChange ,onfullScreen }) => {
   const containerRef = useRef(null);
   const bpmnModelerRef = useRef(null);
   

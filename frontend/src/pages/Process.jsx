@@ -1,5 +1,4 @@
-import React, { useState, useEffect } from 'react';
-
+import React, { useState } from 'react';
 import { 
   Box,
   Tabs,
@@ -9,7 +8,7 @@ import { useTheme } from '@mui/material';
 import FormsTab from './process/FormsTab';
 import { useTranslation } from 'react-i18next';
 import ProcessTab from './process/ProcessTab';
-
+import ProcessInstancesTab from './process/ProcessInstancesTab';
 /**
  * Process management page component
  * @returns {JSX.Element} Process content
@@ -36,12 +35,13 @@ const Process = () => {
       >
         <Tab label={t('process:tabs.management')} />
         <Tab label={t('process:tabs.forms')} />
+        <Tab label={t('process:tabs.instances')} />
       </Tabs>
       {currentTab === 0 && <ProcessTab/>}
       {currentTab === 1 && <FormsTab />}
-  </Box> 
+      {currentTab === 2 && <ProcessInstancesTab />}
+    </Box> 
   );
 };
 
 export default Process;
-

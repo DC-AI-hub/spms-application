@@ -21,45 +21,38 @@ import '@bpmn-io/form-js/dist/assets/form-js-editor-base.css';
  * @param {Object} props.schema - Form schema definition
  * @param {Function} props.onSubmit - Form submission handler
  */
-const FormComponent = ({ schema = { fields: [] }, onSubmit }) => {
+const FormComponent = ({ schema = { fields: [] }, data , onSubmit }) => {
   const formContainer = useRef(null);
   const formRef = useRef(null);
 
   useEffect(() => {
     if (!formContainer.current) return;
 
-    // 初始化表单实例
+    // Initialize form instance
     const form = new Form({
       container: formContainer.current,
     });
 
-    // 导入表单定义（JSON 格式）
-    const schema = {
-      type: "default",
-      components: [
-        {
-          type: "text",
-          label: "用户名",
-          key: "username"
-        },
-        {
-          type: "button",
-          label: "提交",
-          action: "submit"
-        }
-      ]
-    };
-
-    form.importSchema(schema)
-      .then(() => console.log("表单加载成功"))
-      .catch(err => console.error("表单加载失败", err));
+    // Import form schema from props
+    if (schema) {
+      form.importSchema(schema,data)
+        .then(() => {
+          // Handle form submission
+          form.on('submit', (event) => {
+            if (onSubmit) {
+              onSubmit(event.data);
+            }
+          });
+        })
+        .catch(err => console.error("Form loading failed", err));
+    }
 
     formRef.current = form;
 
     return () => form.destroy(); // 卸载时销毁实例
-  }, []);
+  }, [data]);
 
-  return <div ref={formContainer} />;
+  return <div ref={formContainer} className='w-full' />;
 };
 
 export default FormComponent;

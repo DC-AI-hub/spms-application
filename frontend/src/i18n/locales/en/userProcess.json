@@ -2,7 +2,18 @@
   "tabs": {
     "processDefinitions": "Process Definitions",
     "processInstances": "My Instances",
-    "userTasks": "My Tasks"
+    "userTasks": "My Tasks",
+    "processHistory": "Process History"
+  },
+  "switch": {
+    "handledByMe": "Handled by me",
+    "startedByMe": "Started by me"
+  },
+  "processHistoryTable": {
+    "instanceId": "Instance ID",
+    "startTime": "Start Time",
+    "endTime": "End Time",
+    "businessKey": "Business Key"
   },
   "processDefinitions": {
     "title": "Process Definitions",
@@ -24,8 +35,10 @@
       "instanceId": "Instance ID",
       "processName": "Process Name",
       "startTime": "Start Time",
+      "endTime":"End Time",
       "currentStage": "Current Stage",
-      "status": "Status"
+      "status": "Status",
+      "businessKey": "Business Number"
     },
     "dialog": {
       "title": "Details for Instance {{id}}",
@@ -39,7 +52,25 @@
   "userTasks": {
     "title": "My Tasks",
     "description": "View and complete tasks assigned to you",
+    "unassigned": "Unassigned",
+    "assignee":"Assignee",
+    "dialog": {
+      "taskId": "Task ID",
+      "assignee": "Assignee",
+      "title": "Task Details: {{title}}",
+      "processName": "Process Name",
+      "dueDate": "Due Date",
+      "priority": "Priority",
+      "taskDetails": "Task Details",
+      "cancelButton": "Cancel",
+      "completeButton": "Complete",
+      "instanceId": "Instance ID",
+      "status": "Status",
+      "startTime": "Start Time",
+      "noInstance": "No instance data"
+    },
     "table": {
+      "assignee":"Assignee",
       "taskTitle": "Task Title",
       "processName": "Process Name",
       "dueDate": "Due Date",
@@ -47,19 +78,17 @@
       "actions": "Actions"
     },
     "overdue": "Overdue",
+    "errors": {
+      "fetchMetadataFailed": "Failed to fetch process instance metadata",
+      "fetchActivitiesFailed": "Failed to fetch activities"
+    },
+    "processInstance": {
+      "title": "Process Instance Details"
+    },
     "overdueTooltip": "This task is past its due date",
     "detailsTooltip": "View details",
     "completeTooltip": "Complete task",
     "declineTooltip": "Decline task",
-    "dialog": {
-      "title": "Task Details: {{title}}",
-      "processName": "Process Name",
-      "dueDate": "Due Date",
-      "priority": "Priority",
-      "taskDetails": "Task Details",
-      "cancelButton": "Cancel",
-      "completeButton": "Complete"
-    },
     "declineDialog": {
       "title": "Decline Task: {{title}}",
       "description": "Please provide a reason for declining this task",

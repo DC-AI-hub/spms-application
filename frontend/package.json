@@ -8,17 +8,17 @@
     "build": "vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "copy-frontend": "cpx \"dist/**/*\" \"../backend/src/main/resources/static\""
+    "cb": "cpx \"dist/**/*\" \"../backend/src/main/resources/static\""
   },
   "dependencies": {
     "@bpmn-io/form-js": "^1.15.3",
     "@bpmn-io/form-js-viewer": "^1.15.3",
     "@emotion/react": "^11.14.0",
-    "@emotion/styled": "^11.14.0",
+    "@emotion/styled": "^11.14.1",
     "@monaco-editor/react": "^4.7.0",
     "@mui/icons-material": "^7.1.0",
     "@mui/lab": "^7.0.0-beta.14",
-    "@mui/material": "^7.1.0",
+    "@mui/material": "^7.2.0",
     "@mui/x-data-grid": "^8.3.0",
     "@mui/x-tree-view": "^8.5.2",
     "@reactflow/background": "^11.3.14",
@@ -38,8 +38,8 @@
     "i18next": "^25.1.2",
     "moddle": "^7.2.0",
     "papaparse": "^5.5.2",
-    "react": "^19.1.0",
-    "react-dom": "^19.1.0",
+    "react": "^17.0.0 || ^18.0.0 || ^19.0.0",
+    "react-dom": "^17.0.0 || ^18.0.0 || ^19.0.0",
     "react-dropzone": "^14.3.8",
     "react-hook-form": "^7.56.3",
     "react-i18next": "^15.5.1",
@@ -48,9 +48,12 @@
     "reactflow": "^11.11.4",
     "xlsx": "^0.18.5"
   },
+  "peerDependencies": {
+    "react": "^17.0.0 || ^18.0.0 || ^19.0.0",
+    "react-dom": "^17.0.0 || ^18.0.0 || ^19.0.0"
+  },
   "devDependencies": {
     "@eslint/js": "^9.25.0",
-    "@playwright/test": "^1.54.1",
     "@types/react": "^19.1.2",
     "@types/react-dom": "^19.1.2",
     "@vitejs/plugin-react": "^4.4.1",

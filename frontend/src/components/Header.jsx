@@ -71,7 +71,7 @@ const Header = ({ onToggleSidebar }) => {
           {/* Right Section */}
           <div className="flex items-center space-x-4">
             {/* Theme Toggle */}
-            <ThemeToggle />
+            {/*<ThemeToggle />*/}
             {/* Language Selector */}
             <LanguageSelectorWithFlags />
 

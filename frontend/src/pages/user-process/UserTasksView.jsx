@@ -1,69 +1,97 @@
-import React, { useState } from 'react';
-import { 
-  Box, Typography, Table, TableBody, 
-  TableCell, TableContainer, TableHead, 
-  TableRow, Paper, Chip, Dialog, 
-  DialogTitle, DialogContent, DialogContentText, 
-  DialogActions, Button, TextField, IconButton,
-  Tooltip
+import React, { useState, useEffect } from 'react';
+import {
+  Box, Typography, Table, TableBody,
+  TableCell, TableContainer, TableHead,
+  TableRow, Paper, Button, IconButton,
+  Tooltip, LinearProgress, Pagination
 } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import CancelIcon from '@mui/icons-material/Cancel';
 import InfoIcon from '@mui/icons-material/Info';
+import TaskDetailsDialog from '../../components/user-process/TaskDetailsDialog';
+import DeclineTaskDialog from '../../components/user-process/DeclineTaskDialog';
+import userProcessInstanceService from '../../api/process/userProcessInstanceService';
+import formSchemaService from '../../api/process/formSchemaService';
+import processInstanceService from '../../api/process/processInstanceService';
 
 /**
  * User Tasks View - Displays tasks assigned to the user
  */
 const UserTasksView = () => {
   const { t } = useTranslation('userProcess');
+  const [tasks, setTasks] = useState([]);
+  const [formSchemas, setFormSchemas] = useState({});
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const [selectedTask, setSelectedTask] = useState(null);
   const [isDetailsDialogOpen, setIsDetailsDialogOpen] = useState(false);
   const [isDeclineDialogOpen, setIsDeclineDialogOpen] = useState(false);
   const [declineReason, setDeclineReason] = useState('');
-  
-  // Mock data - will be replaced with API data in next phase
-  const userTasks = [
-    { 
-      id: 'T-1001', 
-      title: 'Approve Vacation Request', 
-      processName: 'Leave Request', 
-      dueDate: '2025-07-15', 
-      priority: 'High',
-      status: 'Pending',
-      formData: {
-        employee: 'John Smith',
-        startDate: '2025-08-01',
-        endDate: '2025-08-07',
-        reason: 'Family vacation'
+  const [formSchemaLoading, setFormSchemaLoading] = useState(false);
+
+  // Create enhanced tasks with form schemas
+  const enhancedTasks = tasks.map(task => ({
+    ...task,
+    formSchema: formSchemas[task.taskId] || null
+  }));
+
+  // Pagination state
+  const [pagination, setPagination] = useState({
+    page: 0,
+    size: 10,
+    totalPages: 0,
+    totalElements: 0
+  });
+  const fetchTasks = async () => {
+    try {
+      setLoading(true);
+      const response = await userProcessInstanceService.getAssignedTasks({
+        page: pagination.page,
+        size: pagination.size,
+        sort: 'taskId,asc'
+      });
+
+      setTasks(response.content);
+      setPagination(prev => ({
+        ...prev,
+        totalPages: response.totalPages,
+        totalElements: response.totalElements
+      }));
+
+      // Fetch form schemas for tasks
+      setFormSchemaLoading(true);
+      try {
+        const schemaMap = {};
+        for (const task of response.content) {
+          const schema = await formSchemaService.getFormSchemaByTaskId(task.taskId);
+          if (schema) {
+            schemaMap[task.taskId] = schema;
+          }
+        }
+        setFormSchemas(schemaMap);
+      } catch (err) {
+        console.error('Error fetching form schemas:', err);
+      } finally {
+        setFormSchemaLoading(false);
       }
-    },
-    { 
-      id: 'T-1002', 
-      title: 'Review Expense Report', 
-      processName: 'Expense Approval', 
-      dueDate: '2025-07-14', 
-      priority: 'Medium',
-      status: 'Pending',
-      formData: {
-        employee: 'Jane Doe',
-        totalAmount: 245.75,
-        items: ['Meals: $85', 'Transportation: $160.75']
-      }
-    },
-    { 
-      id: 'T-1003', 
-      title: 'Complete Onboarding Documents', 
-      processName: 'Employee Onboarding', 
-      dueDate: '2025-07-20', 
-      priority: 'Low',
-      status: 'Pending',
-      formData: {
-        newHire: 'Robert Chen',
-        documents: ['NDA', 'Tax Forms', 'Benefits Enrollment']
-      }
+    } catch (err) {
+      setError(t('userTasks.fetchError'));
+      console.error('Error fetching tasks:', err);
+    } finally {
+      setLoading(false);
     }
-  ];
+  };
+
+  // Fetch tasks from API
+  useEffect(() => {
+
+    fetchTasks();
+  }, [pagination.page, pagination.size, t]);
+
+  const handlePageChange = (event, newPage) => {
+    setPagination(prev => ({ ...prev, page: newPage - 1 }));
+  };
 
   const handleDetailsClick = (task) => {
     setSelectedTask(task);
@@ -86,103 +114,71 @@ const UserTasksView = () => {
     setDeclineReason('');
   };
 
-  const handleCompleteTask = () => {
-    console.log(`Completing task: ${selectedTask.title}`);
+  // Handle task operations (mock implementations)
+  const handleCompleteTask = (e) => {
+    console.log(e);
     setIsDetailsDialogOpen(false);
-    // TODO: Update task status to 'Completed' via API
+    processInstanceService.completeTask(
+      e.processInstanceId,
+      e.taskId,
+      {
+        "rejectionReason":null,
+        "formData": e.formData,
+        "approve": "approve"
+      }
+    )
+    setTimeout(() => {
+      fetchTasks()  
+    }, 500);
+    // In real implementation, we would update API and refresh task list
   };
 
-  const handleConfirmDecline = () => {
-    console.log(`Declining task: ${selectedTask.title} with reason: ${declineReason}`);
-    // TODO: Update task status to 'Declined' via API
+  const handleConfirmDecline = (reason) => {
+    console.log(`Declining task: ${selectedTask.name} with reason: ${reason}`);
     handleCloseDeclineDialog();
-  };
-
-  const isOverdue = (dueDate) => {
-    const today = new Date();
-    const due = new Date(dueDate);
-    return due < today;
-  };
-
-  const getPriorityColor = (priority) => {
-    switch (priority.toLowerCase()) {
-      case 'high': return 'error';
-      case 'medium': return 'warning';
-      case 'low': return 'success';
-      default: return 'default';
-    }
-  };
-
-  const renderFormData = (formData) => {
-    return Object.entries(formData).map(([key, value], index) => (
-      <Box key={index} mb={1}>
-        <Typography>
-          <strong>{key}:</strong> {Array.isArray(value) ? value.join(', ') : value}
-        </Typography>
-      </Box>
-    ));
+    processInstanceService.rejectTask(selectedTask.processInstanceId, selectedTask.taskId, {
+      "rejectionReason": reason,
+      "formData": {},
+      "approve": "reject"
+    })
+    setTimeout(() => {
+      fetchTasks()  
+    }, 500);
+    
+    // In real implementation, we would update API and refresh task list
   };
 
   return (
     <div>
-      <Typography variant="h5" gutterBottom mb={3}>
+      <Typography variant="h5" gutterBottom mb={2}>
         {t('userTasks.title')}
       </Typography>
-      
-      <TableContainer component={Paper}>
+
+      {(loading || formSchemaLoading) && <LinearProgress />}
+      {error && (
+        <Box mb={2} p={2} bgcolor="error.main" color="white" borderRadius={1}>
+          <Typography>{error}</Typography>
+        </Box>
+      )}
+
+      <TableContainer component={Paper} sx={{ mb: 2 }}>
         <Table sx={{ minWidth: 650 }} aria-label="user tasks table">
           <TableHead>
             <TableRow>
               <TableCell>{t('userTasks.table.taskTitle')}</TableCell>
-              <TableCell>{t('userTasks.table.processName')}</TableCell>
-              <TableCell>{t('userTasks.table.dueDate')}</TableCell>
-              <TableCell>{t('userTasks.table.priority')}</TableCell>
+              <TableCell>{t('userTasks.table.assignee')}</TableCell>
               <TableCell>{t('userTasks.table.actions')}</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
-            {userTasks.map((task) => (
-              <TableRow 
-                key={task.id}
-                hover
-                sx={{ 
-                  backgroundColor: isOverdue(task.dueDate) ? '#fff8e1' : 'inherit',
-                  '&:hover': { backgroundColor: isOverdue(task.dueDate) ? '#fff5cc' : '#f5f5f5' }
-                }}
-              >
-                <TableCell>
-                  <Box display="flex" alignItems="center">
-                    {task.title}
-                    {isOverdue(task.dueDate) && (
-                      <Chip 
-                        label={t('userTasks.overdue')} 
-                        color="error" 
-                        size="small" 
-                        sx={{ ml: 1 }}
-                      />
-                    )}
-                  </Box>
-                </TableCell>
-                <TableCell>{task.processName}</TableCell>
-                <TableCell>
-                  {new Date(task.dueDate).toLocaleDateString()}
-                  {isOverdue(task.dueDate) && (
-                    <Tooltip title={t('userTasks.overdueTooltip')}>
-                      <InfoIcon color="error" sx={{ ml: 1, fontSize: '1rem' }} />
-                    </Tooltip>
-                  )}
-                </TableCell>
-                <TableCell>
-                  <Chip 
-                    label={task.priority} 
-                    color={getPriorityColor(task.priority)}
-                    size="small"
-                  />
-                </TableCell>
+            {tasks.map((task) => (
+              <TableRow key={task.taskId} hover>
+                <TableCell>{task.name}</TableCell>
+                <TableCell>{task.assignee || t('userTasks.unassigned')}</TableCell>
                 <TableCell>
                   <Box display="flex" gap={1}>
                     <Tooltip title={t('userTasks.detailsTooltip')}>
-                      <IconButton 
+                      <IconButton
                         color="primary"
                         onClick={() => handleDetailsClick(task)}
                       >
@@ -190,7 +186,7 @@ const UserTasksView = () => {
                       </IconButton>
                     </Tooltip>
                     <Tooltip title={t('userTasks.completeTooltip')}>
-                      <IconButton 
+                      <IconButton
                         color="success"
                         onClick={() => handleDetailsClick(task)}
                       >
@@ -198,7 +194,7 @@ const UserTasksView = () => {
                       </IconButton>
                     </Tooltip>
                     <Tooltip title={t('userTasks.declineTooltip')}>
-                      <IconButton 
+                      <IconButton
                         color="error"
                         onClick={() => handleDeclineClick(task)}
                       >
@@ -213,97 +209,37 @@ const UserTasksView = () => {
         </Table>
       </TableContainer>
 
-      {/* Task Details Dialog */}
-      <Dialog open={isDetailsDialogOpen} onClose={handleCloseDetailsDialog} maxWidth="md" fullWidth>
-        <DialogTitle>
-          {t('userTasks.dialog.title', { title: selectedTask?.title })}
-        </DialogTitle>
-        <DialogContent>
-          {selectedTask && (
-            <>
-              <Typography variant="subtitle1" gutterBottom>
-                {t('userTasks.dialog.processName')}: {selectedTask.processName}
-              </Typography>
-              <Typography variant="subtitle1" gutterBottom>
-                {t('userTasks.dialog.dueDate')}: {new Date(selectedTask.dueDate).toLocaleDateString()}
-                {isOverdue(selectedTask.dueDate) && (
-                  <Chip 
-                    label={t('userTasks.overdue')} 
-                    color="error" 
-                    size="small" 
-                    sx={{ ml: 1 }}
-                  />
-                )}
-              </Typography>
-              <Typography variant="subtitle1" gutterBottom>
-                {t('userTasks.dialog.priority')}: 
-                <Chip 
-                  label={selectedTask.priority} 
-                  color={getPriorityColor(selectedTask.priority)}
-                  size="small"
-                  sx={{ ml: 1 }}
-                />
-              </Typography>
-              
-              <Typography variant="h6" mt={3} mb={2}>
-                {t('userTasks.dialog.taskDetails')}
-              </Typography>
-              {renderFormData(selectedTask.formData)}
-            </>
-          )}
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleCloseDetailsDialog}>
-            {t('userTasks.dialog.cancelButton')}
-          </Button>
-          <Button 
-            onClick={handleCompleteTask}
-            variant="contained"
-            color="success"
-            startIcon={<CheckCircleIcon />}
-          >
-            {t('userTasks.dialog.completeButton')}
-          </Button>
-        </DialogActions>
-      </Dialog>
-
-      {/* Decline Task Dialog */}
-      <Dialog open={isDeclineDialogOpen} onClose={handleCloseDeclineDialog}>
-        <DialogTitle>
-          {t('userTasks.declineDialog.title', { title: selectedTask?.title })}
-        </DialogTitle>
-        <DialogContent>
-          <DialogContentText mb={2}>
-            {t('userTasks.declineDialog.description')}
-          </DialogContentText>
-          <TextField
-            autoFocus
-            margin="dense"
-            label={t('userTasks.declineDialog.reasonLabel')}
-            type="text"
-            fullWidth
-            variant="outlined"
-            value={declineReason}
-            onChange={(e) => setDeclineReason(e.target.value)}
-            multiline
-            rows={3}
+      {pagination.totalPages > 1 && (
+        <Box display="flex" justifyContent="center">
+          <Pagination
+            count={pagination.totalPages}
+            page={pagination.page + 1}
+            onChange={handlePageChange}
+            color="primary"
           />
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleCloseDeclineDialog}>
-            {t('userTasks.declineDialog.cancelButton')}
-          </Button>
-          <Button 
-            onClick={handleConfirmDecline}
-            variant="contained"
-            color="error"
-            startIcon={<CancelIcon />}
-            disabled={!declineReason.trim()}
-          >
-            {t('userTasks.declineDialog.confirmButton')}
-          </Button>
-        </DialogActions>
-      </Dialog>
+        </Box>
+      )}
+
+      <TaskDetailsDialog
+        open={isDetailsDialogOpen}
+        task={selectedTask ? enhancedTasks.find(t => t.taskId === selectedTask.taskId) : null}
+        onClose={handleCloseDetailsDialog}
+        onComplete={handleCompleteTask}
+      />
+
+      <DeclineTaskDialog
+        open={isDeclineDialogOpen}
+        onClose={handleCloseDeclineDialog}
+        onConfirm={handleConfirmDecline}
+        task={selectedTask}
+        translations={{
+          title: t('userTasks.declineDialog.title'),
+          description: t('userTasks.declineDialog.description'),
+          reasonLabel: t('userTasks.declineDialog.reasonLabel'),
+          cancelButton: t('userTasks.declineDialog.cancelButton'),
+          confirmButton: t('userTasks.declineDialog.confirmButton')
+        }}
+      />
     </div>
   );
 };

@@ -14,3 +14,10 @@
 .bio-properties-panel {
     border-top: 1px solid gray;
 }
+.fjs-powered-by  {
+  display: none;
+}
+
+.fjs-element {
+  height: 100%;
+}

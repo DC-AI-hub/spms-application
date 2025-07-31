@@ -10,7 +10,6 @@ import LockIcon from '@mui/icons-material/Lock';
 import ProcessDesigner from '../../components/bpmn/ProcessDesigner';
 import ConfirmationDialog from '../../components/ConfirmationDialog';
 import VersionInput from '../../components/common/VersionInput';
-import UserSelector from '../../components/common/UserSelector';
 import FormSelector from '../../components/process/FormSelector';
 
 const VersionEditorDialog = ({ open, version, onClose, onSave }) => {
@@ -21,7 +20,6 @@ const VersionEditorDialog = ({ open, version, onClose, onSave }) => {
   const [bpmnXml, setBpmnXml] = useState(version?.bpmnXml || '');
   const [description, setDescription] = useState(version?.description || '');
   const [loading, setLoading] = useState(false);
-  const designerRef = useRef(null);
   const [errors, setErrors] = useState({});
   const [showConfirmation, setShowConfirmation] = useState(false);
   const [fullScreen, setFullScreen] = useState(false);
@@ -173,7 +171,6 @@ const VersionEditorDialog = ({ open, version, onClose, onSave }) => {
         {fullScreen && (
           <Box sx={{ border: errors.designer ? '1px solid red' : '1px solid #ccc', height: "100%" }}>
             <ProcessDesigner
-              ref={designerRef}
               initialXml={bpmnXml}
               onChange={handleDesignerChange}
               onfullScreen={() => setFullScreen(false)}

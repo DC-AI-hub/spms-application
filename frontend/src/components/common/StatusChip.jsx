@@ -8,6 +8,8 @@ const StatusChip = ({ status, value, onClick, clickable }) => {
         return 'primary';
       case 'DEPLOYED': 
         return 'success';
+      case 'ACTIVE' , 'created':
+        return 'info';
       case 'INACTIVE': 
         return 'error';
       default: 
@@ -17,7 +19,7 @@ const StatusChip = ({ status, value, onClick, clickable }) => {
 
   return (
     <Chip
-      label={value}
+      label={value.toUpperCase()}
       color={getColor()}
       size="small"
       variant="outlined"

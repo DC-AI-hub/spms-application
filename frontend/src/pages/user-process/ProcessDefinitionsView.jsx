@@ -43,9 +43,9 @@ const ProcessDefinitionsView = () => {
           try {
             const versionsResponse = await processService.getDefinitionVersions(
               process.id,
-              { page: 0, size: 1 }
+              { page: 0, size: 100, "include-bpmn":"false" }
             );
-            const latestVersion = versionsResponse.content[0]?.version || t('userProcess:no-version-defined');
+            const latestVersion = versionsResponse.content?.filter(x=>x.status ==="DEPLOYED")[0]?.version || t('userProcess:no-version-defined') ;
             const hasValidVersion = latestVersion && 
               latestVersion !== t('userProcess:no-version-defined') && 
               !latestVersion.includes('?');

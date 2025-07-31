@@ -185,7 +185,6 @@ const ProcessVersionForm = ({ open, definitionId, onClose, onCreate }) => {
   const [ownerId, setOwnerId] = useState(null);
   const [businessOwnerId, setBusinessOwnerId] = useState(null);
   const [loading, setLoading] = useState(false);
-  const designerRef = useRef(null);
   const [errors, setErrors] = useState({});
   const [showConfirmation, setShowConfirmation] = useState(false);
   const [fullScreen, setFullSecreen] = useState(false);
@@ -362,7 +361,6 @@ const ProcessVersionForm = ({ open, definitionId, onClose, onCreate }) => {
 
         {fullScreen && <Box sx={{  border: errors.designer ? '1px solid red' : '1px solid #ccc',height:"100%" }}>
           <ProcessDesigner
-            ref={designerRef}
             initialXml={bpmnXml}
             onChange={handleDesignerChange}
             onfullScreen={() => {

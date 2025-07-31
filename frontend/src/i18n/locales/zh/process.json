@@ -11,7 +11,44 @@
     "forms": "表单管理",
     "versions": "版本管理",
     "assignments": "任务分配",
-    "assignmentsComingSoon": "分配功能即将推出"
+    "assignmentsComingSoon": "分配功能即将推出",
+    "instances": "实例"
+  },
+  "instances": {
+    "columns": {
+      "id": "ID",
+      "definitionId": "定义ID",
+      "status": "状态",
+      "startTime": "开始时间",
+      "businessKey": "业务键",
+      "actions": "操作"
+    },
+    "dialog": {
+      "title": "流程活动",
+      "noActivities": "未找到活动"
+    }
+  },
+  "errors": {
+    "fetchInstancesFailed": "获取流程实例失败",
+    "fetchActivitiesFailed": "获取流程活动失败"
+  },
+  "activity": {
+    "startTime": "开始时间",
+    "endTime": "结束时间",
+    "duration": "持续时间",
+    "ongoing": "进行中"
+  },
+  "definition": {
+    "title": "Process Definition",
+    "name": "Name",
+    "key": "Key",
+    "version": "Version"
+  },
+  "instance": {
+    "title": "Instance Details",
+    "id": "ID",
+    "status": "Status",
+    "startTime": "Start Time"
   },
   "status": "状态",
   "lastModified": "最后修改",
@@ -116,5 +153,17 @@
     "title": "选择要激活的版本",
     "createdAt": "创建时间",
     "activate": "激活此版本"
+  },
+  "processInstances": {
+    "dialog": {
+      "title": "流程实例详情",
+      "activitiesTitle": "活动",
+      "completedAt": "完成于",
+      "inProgress": "进行中",
+      "noActivities": "未找到活动",
+      "activeTasksTitle": "活动任务",
+      "closeButton": "关闭"
+    },
+    "notCompleted": "未完成"
   }
 }

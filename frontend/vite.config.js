@@ -15,14 +15,14 @@ export default defineConfig({
         target: backendEndpoint,
         changeOrigin: true,
         secure: false,
+        // 关键：处理重定向
         hostRewrite: frontendHostName,
         xfwd: true,
         configure: (proxy) => {
-          /*
           proxy.on('proxyRes', (proxyRes, req, res) => {
+            /*
             const location = proxyRes.headers['location'];
             if (proxyRes.statusCode === 302 && location) {
-              处理OAuth2重定向 - 将后端重定向转换为前端路由
               // 替换后端地址为前端地址
               if (location.includes(backendHostName)) {
                 proxyRes.headers['location'] = location.replace(
@@ -37,14 +37,21 @@ export default defineConfig({
                   fontendEndpoint + '/idp'
                 );
               }
-            }
-          });*/
+            }*/
+          });
         }
       }
     }
   },
   build: {
-    rollupOptions: {
+    sourcemap: true,
+
+    chunkSizeWarningLimit: 700,
+  }
+})
+
+
+/**    rollupOptions: {
       output: {
         manualChunks(id) {
           if (id.includes('node_modules')) {
@@ -58,7 +65,4 @@ export default defineConfig({
           }
         }
       }
-    },
-    chunkSizeWarningLimit: 700,
-  }
-})
+    }, */
