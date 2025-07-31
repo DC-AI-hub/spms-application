@@ -1,0 +1,212 @@
+{
+    "divisions": [
+      {
+        "ID": "ITD_Shenzhen_Shanghai",
+        "Name": "ITD Shenzhen / Shanghai",
+        "Description": "Main IT Division for Shenzhen and Shanghai offices",
+        "LanguageTags": {
+          "en": "IT Department Group",
+          "cn": "IT部"
+        },
+        "CompanyType": "Business Unit",
+        "CompanyProfiles": {
+          "BusinessLicense": "BU1234567890"
+        },
+        "Audit Trails": {
+          "2025-05-18": "checked",
+          "2025-01-01": "created"
+        },
+        "Departments": [
+          {
+            "ID": "Post_Trade_System",
+            "Company": "ITD_Shenzhen_Shanghai",
+            "Name": "Post-Trade System",
+            "Tags": ["primary location", "HK"],
+            "Parent": null,
+            "Type": "OU",
+            "Level": 1
+          },
+          {
+            "ID": "Market_System",
+            "Company": "ITD_Shenzhen_Shanghai",
+            "Name": "Market System",
+            "Tags": ["primary location", "HK"],
+            "Parent": null,
+            "Type": "OU",
+            "Level": 1
+          },
+          {
+            "ID": "Application_Engineer",
+            "Company": "ITD_Shenzhen_Shanghai",
+            "Name": "Application Engineer",
+            "Tags": ["primary location", "HK"],
+            "Parent": null,
+            "Type": "OU",
+            "Level": 1
+          },
+          {
+            "ID": "Application_Integration",
+            "Company": "ITD_Shenzhen_Shanghai",
+            "Name": "Application Integration",
+            "Tags": ["primary location", "HK"],
+            "Parent": null,
+            "Type": "OU",
+            "Level": 1
+          },
+          {
+            "ID": "Listing_Corporate_System",
+            "Company": "ITD_Shenzhen_Shanghai",
+            "Name": "Listing & Corporate System",
+            "Tags": ["primary location", "HK"],
+            "Parent": null,
+            "Type": "OU",
+            "Level": 1
+          },
+          {
+            "ID": "Information_Security",
+            "Company": "ITD_Shenzhen_Shanghai",
+            "Name": "Information Security",
+            "Tags": ["primary location", "HK"],
+            "Parent": null,
+            "Type": "OU",
+            "Level": 1
+          },
+          {
+            "ID": "Infrastructure_Operations",
+            "Company": "ITD_Shenzhen_Shanghai",
+            "Name": "Infrastructure & Operations",
+            "Tags": ["primary location", "HK"],
+            "Parent": null,
+            "Type": "OU",
+            "Level": 1
+          },
+          {
+            "ID": "Technology_Service_Management",
+            "Company": "ITD_Shenzhen_Shanghai",
+            "Name": "Technology Service Management",
+            "Tags": ["primary location", "HK"],
+            "Parent": "Infrastructure_Operations",
+            "Type": "Department",
+            "Level": 2
+          },
+          {
+            "ID": "Infrastructure_Critical_Service",
+            "Company": "ITD_Shenzhen_Shanghai",
+            "Name": "Infrastructure Critical Service",
+            "Tags": ["primary location", "HK"],
+            "Parent": "Infrastructure_Operations",
+            "Type": "Department",
+            "Level": 2
+          },
+          {
+            "ID": "System_Network_Operations",
+            "Company": "ITD_Shenzhen_Shanghai",
+            "Name": "System & Network Operations",
+            "Tags": ["primary location", "HK"],
+            "Parent": "Infrastructure_Operations",
+            "Type": "Department",
+            "Level": 2
+          },
+          {
+            "ID": "CHC_QME_support",
+            "Company": "ITD_Shenzhen_Shanghai",
+            "Name": "CHC | QME Support",
+            "Tags": ["primary location", "HK"],
+            "Parent": null,
+            "Type": "OU",
+            "Level": 1
+          },
+          {
+            "ID": "Data_Engineering",
+            "Company": "ITD_Shenzhen_Shanghai",
+            "Name": "Data Engineering",
+            "Tags": ["primary location", "HK"],
+            "Parent": null,
+            "Type": "OU",
+            "Level": 1
+          },
+          {
+            "ID": "Testing_COE",
+            "Company": "ITD_Shenzhen_Shanghai",
+            "Name": "Testing COE",
+            "Tags": ["primary location", "HK"],
+            "Parent": null,
+            "Type": "OU",
+            "Level": 1
+          },
+          {
+            "ID": "HK_Testing",
+            "Company": "ITD_Shenzhen_Shanghai",
+            "Name": "HK Testing",
+            "Tags": ["primary location", "HK"],
+            "Parent": "Testing_COE",
+            "Type": "Team",
+            "Level": 2
+          },
+          {
+            "ID": "LME_LMEC_Testing",
+            "Company": "ITD_Shenzhen_Shanghai",
+            "Name": "LME/LMEC Testing",
+            "Tags": ["primary location", "HK"],
+            "Parent": "Testing_COE",
+            "Type": "Team",
+            "Level": 2
+          },
+          {
+            "ID": "LME_Engineering",
+            "Company": "ITD_Shenzhen_Shanghai",
+            "Name": "LME Engineering",
+            "Tags": ["primary location", "HK"],
+            "Parent": "Testing_COE",
+            "Type": "Team",
+            "Level": 2
+          },
+          {
+            "ID": "ITD_Shanghai",
+            "Company": "ITD_Shenzhen_Shanghai",
+            "Name": "ITD Shanghai",
+            "Tags": ["primary location", "Shanghai"],
+            "Parent": null,
+            "Type": "OU",
+            "Level": 1
+          },
+          {
+            "ID": "ITD_SZ_SH_Management_Office",
+            "Company": "ITD_Shenzhen_Shanghai",
+            "Name": "ITD SZ/SH Management Office",
+            "Tags": ["primary location", "HK"],
+            "Parent": null,
+            "Type": "OU",
+            "Level": 1
+          },
+          {
+            "ID": "Third_Party_Management",
+            "Company": "ITD_Shenzhen_Shanghai",
+            "Name": "Third-Party Management",
+            "Tags": ["primary location", "HK"],
+            "Parent": "ITD_SZ_SH_Management_Office",
+            "Type": "Department",
+            "Level": 2
+          }
+        ]
+      },
+      {
+        "ID": "ITD_Shanghai",
+        "Name": "ITD Shanghai",
+        "Description": "Shanghai IT Division",
+        "LanguageTags": {
+          "en": "IT Department Group",
+          "cn": "IT部"
+        },
+        "CompanyType": "Business Unit",
+        "CompanyProfiles": {
+          "BusinessLicense": "BU1234567891"
+        },
+        "Audit Trails": {
+          "2025-05-18": "checked",
+          "2025-01-01": "created"
+        }
+      }
+    ]
+  }
+  
