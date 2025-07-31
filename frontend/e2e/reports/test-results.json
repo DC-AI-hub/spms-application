@@ -1,0 +1,969 @@
+{
+  "config": {
+    "configFile": "D:\\spms-application\\spms-application\\frontend\\playwright.config.js",
+    "rootDir": "D:/spms-application/spms-application/frontend/e2e/specs",
+    "forbidOnly": false,
+    "fullyParallel": true,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 1
+    },
+    "preserveOutput": "always",
+    "reporter": [
+      [
+        "html",
+        {
+          "outputFolder": "./e2e/reports/html-report"
+        }
+      ],
+      [
+        "json",
+        {
+          "outputFile": "./e2e/reports/test-results.json"
+        }
+      ],
+      [
+        "junit",
+        {
+          "outputFile": "./e2e/reports/junit-results.xml"
+        }
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "quiet": false,
+    "projects": [
+      {
+        "outputDir": "D:/spms-application/spms-application/frontend/e2e/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "chromium",
+        "name": "chromium",
+        "testDir": "D:/spms-application/spms-application/frontend/e2e/specs",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 30000
+      },
+      {
+        "outputDir": "D:/spms-application/spms-application/frontend/e2e/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "firefox",
+        "name": "firefox",
+        "testDir": "D:/spms-application/spms-application/frontend/e2e/specs",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 30000
+      },
+      {
+        "outputDir": "D:/spms-application/spms-application/frontend/e2e/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "webkit",
+        "name": "webkit",
+        "testDir": "D:/spms-application/spms-application/frontend/e2e/specs",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 30000
+      }
+    ],
+    "shard": null,
+    "updateSnapshots": "missing",
+    "updateSourceMethod": "patch",
+    "version": "1.54.1",
+    "workers": 8,
+    "webServer": null
+  },
+  "suites": [
+    {
+      "title": "company-management.spec.ts",
+      "file": "company-management.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "公司模块测试",
+          "file": "company-management.spec.ts",
+          "line": 146,
+          "column": 6,
+          "specs": [
+            {
+              "title": "C001 - 应能正确显示公司列表",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 33,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "📍 步骤1：访问首页\n"
+                        },
+                        {
+                          "text": "📍 步骤2：等待Keycloak登录页面\n"
+                        },
+                        {
+                          "text": "📍 步骤3：输入登录凭据\n"
+                        },
+                        {
+                          "text": "📍 步骤4：等待跳转到前端页面\n"
+                        },
+                        {
+                          "text": "📍 步骤5：点击菜单图标\n"
+                        },
+                        {
+                          "text": "📍 步骤6：点击Organization导航\n"
+                        },
+                        {
+                          "text": "✅ 登录并导航完成\n"
+                        },
+                        {
+                          "text": "🧪 开始测试 C001: 公司列表基本显示\n"
+                        },
+                        {
+                          "text": "✅ C001测试通过：公司列表基本显示正常\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-07-30T02:07:57.624Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "0c9439e96ef15aaff451-b1c8d3a5fa01d0d366f6",
+              "file": "company-management.spec.ts",
+              "line": 200,
+              "column": 3
+            },
+            {
+              "title": "C002, C003 - 验证全选功能和顶部按钮",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 45,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "🧪 开始测试 C002, C003: 全选功能和按钮显示\n"
+                        },
+                        {
+                          "text": "⚠️ C002, C003测试跳过： expect.toBeVisible: Error: strict mode violation: locator('button:has-text(\"删除选中\"), button:has-text(\"Delete\")') resolved to 2 elements:\n    1) <button disabled tabindex=\"-1\" type=\"button\" class=\"MuiButtonBase-root MuiButton-root MuiButton-outlined MuiButton-outlinedError MuiButton-sizeMedium MuiButton-outlinedSizeMedium MuiButton-colorError Mui-disabled MuiButton-root MuiButton-outlined MuiButton-outlinedError MuiButton-sizeMedium MuiButton-outlinedSizeMedium MuiButton-colorError css-1ig3gqa-MuiButtonBase-root-MuiButton-root\">Bulk Delete</button> aka getByRole('button', { name: 'Bulk Delete' })\n    2) <button tabindex=\"0\" type=\"button\" class=\"MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textError MuiButton-sizeSmall MuiButton-textSizeSmall MuiButton-colorError MuiButton-root MuiButton-text MuiButton-textError MuiButton-sizeSmall MuiButton-textSizeSmall MuiButton-colorError css-1gbk38-MuiButtonBase-root-MuiButton-root\">Delete</button> aka getByRole('button', { name: 'Delete', exact: true })\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('button:has-text(\"删除选中\"), button:has-text(\"Delete\")')\u001b[22m\n\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-07-30T02:08:22.833Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "0c9439e96ef15aaff451-5d77add2b2eb42c4f314",
+              "file": "company-management.spec.ts",
+              "line": 223,
+              "column": 3
+            },
+            {
+              "title": "C029, C030 - 必填字段验证",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 6405,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "🧪 开始测试 C029, C030: 必填字段验证\n"
+                        },
+                        {
+                          "text": "✅ C029, C030测试通过：必填验证功能正常\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-07-30T02:08:22.881Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "0c9439e96ef15aaff451-b360bd2246c757995c63",
+              "file": "company-management.spec.ts",
+              "line": 255,
+              "column": 3
+            },
+            {
+              "title": "C006, C007 - 创建公司弹窗和Group类型公司",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 14680,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "🧪 开始测试 C006, C007: 创建公司弹窗和Group类型\n"
+                        },
+                        {
+                          "text": "⚠️ C006, C007测试失败：保存没有反应\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-07-30T02:08:29.289Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "0c9439e96ef15aaff451-66402d6d161d66c07ee9",
+              "file": "company-management.spec.ts",
+              "line": 288,
+              "column": 3
+            },
+            {
+              "title": "C008 - Business Entity类型关联验证",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 10624,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "🧪 开始测试 C008: Business Entity关联验证\n"
+                        },
+                        {
+                          "text": "⚠️ C008测试：未找到预期的验证错误信息\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-07-30T02:08:43.973Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "0c9439e96ef15aaff451-098a1963f0da70ce1eb4",
+              "file": "company-management.spec.ts",
+              "line": 370,
+              "column": 3
+            },
+            {
+              "title": "批量创建公司（为分页和搜索测试提供数据）",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "timedOut",
+                      "duration": 30169,
+                      "error": {
+                        "message": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m",
+                        "stack": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m"
+                      },
+                      "errors": [
+                        {
+                          "message": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m"
+                        }
+                      ],
+                      "stdout": [
+                        {
+                          "text": "🧪 批量创建公司以提供测试数据（满足C005分页要求）\n"
+                        },
+                        {
+                          "text": "🏭 创建公司: 测试公司-34602-A (Group)\n"
+                        },
+                        {
+                          "text": "⚠️ 测试公司-34602-A 创建失败：保存没有反应\n"
+                        },
+                        {
+                          "text": "⚠️ 测试公司-34602-A 创建失败，继续下一个\n"
+                        },
+                        {
+                          "text": "🏭 创建公司: 测试公司-34602-B (Group)\n"
+                        },
+                        {
+                          "text": "⚠️ 批量创建公司跳过： page.waitForTimeout: Target page, context or browser has been closed\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-07-30T02:08:54.600Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "D:\\spms-application\\spms-application\\frontend\\e2e\\test-results\\company-management-公司模块测试-批量创建公司（为分页和搜索测试提供数据）-chromium\\test-failed-1.png"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "D:\\spms-application\\spms-application\\frontend\\e2e\\test-results\\company-management-公司模块测试-批量创建公司（为分页和搜索测试提供数据）-chromium\\error-context.md"
+                        }
+                      ]
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "0c9439e96ef15aaff451-abca8d1a9fc943e9ec08",
+              "file": "company-management.spec.ts",
+              "line": 423,
+              "column": 3
+            },
+            {
+              "title": "C040 - 创建后列表刷新验证",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": -1,
+                      "parallelIndex": -1,
+                      "status": "skipped",
+                      "duration": 0,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-07-30T02:09:25.100Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "skipped"
+                }
+              ],
+              "id": "0c9439e96ef15aaff451-57d5d5f6dce999922d45",
+              "file": "company-management.spec.ts",
+              "line": 454,
+              "column": 3
+            },
+            {
+              "title": "C004 - 模糊搜索功能验证",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": -1,
+                      "parallelIndex": -1,
+                      "status": "skipped",
+                      "duration": 0,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-07-30T02:09:25.102Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "skipped"
+                }
+              ],
+              "id": "0c9439e96ef15aaff451-37a07d89f7af2521f4ae",
+              "file": "company-management.spec.ts",
+              "line": 510,
+              "column": 3
+            },
+            {
+              "title": "C005, C032 - 分页功能验证和分页大小变更",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": -1,
+                      "parallelIndex": -1,
+                      "status": "skipped",
+                      "duration": 0,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-07-30T02:09:25.105Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "skipped"
+                }
+              ],
+              "id": "0c9439e96ef15aaff451-0a2380baf23abdb75d79",
+              "file": "company-management.spec.ts",
+              "line": 535,
+              "column": 3
+            },
+            {
+              "title": "C027 - 列表排序功能验证",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": -1,
+                      "parallelIndex": -1,
+                      "status": "skipped",
+                      "duration": 0,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-07-30T02:09:25.107Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "skipped"
+                }
+              ],
+              "id": "0c9439e96ef15aaff451-85d75b2749c677a17aff",
+              "file": "company-management.spec.ts",
+              "line": 578,
+              "column": 3
+            },
+            {
+              "title": "C010, C011, C012 - 公司编辑功能验证",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": -1,
+                      "parallelIndex": -1,
+                      "status": "skipped",
+                      "duration": 0,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-07-30T02:09:25.108Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "skipped"
+                }
+              ],
+              "id": "0c9439e96ef15aaff451-1e253ae88cd9dd9ba1c0",
+              "file": "company-management.spec.ts",
+              "line": 600,
+              "column": 3
+            },
+            {
+              "title": "C009 - Vendor类型创建",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": -1,
+                      "parallelIndex": -1,
+                      "status": "skipped",
+                      "duration": 0,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-07-30T02:09:25.110Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "skipped"
+                }
+              ],
+              "id": "0c9439e96ef15aaff451-66f388d93affa7a4f8c1",
+              "file": "company-management.spec.ts",
+              "line": 655,
+              "column": 3
+            },
+            {
+              "title": "C023, C024 - 多语言列名和按钮支持",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": -1,
+                      "parallelIndex": -1,
+                      "status": "skipped",
+                      "duration": 0,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-07-30T02:09:25.112Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "skipped"
+                }
+              ],
+              "id": "0c9439e96ef15aaff451-c400a3f4cc3d406bda7d",
+              "file": "company-management.spec.ts",
+              "line": 672,
+              "column": 3
+            },
+            {
+              "title": "C025 - Group类型独立性验证",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": -1,
+                      "parallelIndex": -1,
+                      "status": "skipped",
+                      "duration": 0,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-07-30T02:09:25.114Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "skipped"
+                }
+              ],
+              "id": "0c9439e96ef15aaff451-43b34a47e6fe5c5ac795",
+              "file": "company-management.spec.ts",
+              "line": 705,
+              "column": 3
+            },
+            {
+              "title": "C026 - Other类型关联限制",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": -1,
+                      "parallelIndex": -1,
+                      "status": "skipped",
+                      "duration": 0,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-07-30T02:09:25.116Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "skipped"
+                }
+              ],
+              "id": "0c9439e96ef15aaff451-98a05c53c0429a3c5dd0",
+              "file": "company-management.spec.ts",
+              "line": 747,
+              "column": 3
+            },
+            {
+              "title": "C028 - 状态切换验证",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": -1,
+                      "parallelIndex": -1,
+                      "status": "skipped",
+                      "duration": 0,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-07-30T02:09:25.118Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "skipped"
+                }
+              ],
+              "id": "0c9439e96ef15aaff451-f7e29ec5dc79c7e212d9",
+              "file": "company-management.spec.ts",
+              "line": 764,
+              "column": 3
+            },
+            {
+              "title": "C031 - 特殊字符搜索",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": -1,
+                      "parallelIndex": -1,
+                      "status": "skipped",
+                      "duration": 0,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-07-30T02:09:25.120Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "skipped"
+                }
+              ],
+              "id": "0c9439e96ef15aaff451-b632e45ff35d43c31919",
+              "file": "company-management.spec.ts",
+              "line": 800,
+              "column": 3
+            },
+            {
+              "title": "C034 - 创建字段完整性",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": -1,
+                      "parallelIndex": -1,
+                      "status": "skipped",
+                      "duration": 0,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-07-30T02:09:25.122Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "skipped"
+                }
+              ],
+              "id": "0c9439e96ef15aaff451-2970c909890533b4509b",
+              "file": "company-management.spec.ts",
+              "line": 825,
+              "column": 3
+            },
+            {
+              "title": "C039 - 关联公司筛选",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": -1,
+                      "parallelIndex": -1,
+                      "status": "skipped",
+                      "duration": 0,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-07-30T02:09:25.125Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "skipped"
+                }
+              ],
+              "id": "0c9439e96ef15aaff451-03903dee1e0be91ce0af",
+              "file": "company-management.spec.ts",
+              "line": 858,
+              "column": 3
+            },
+            {
+              "title": "C016, C017, C018, C019 - 导入功能验证",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": -1,
+                      "parallelIndex": -1,
+                      "status": "skipped",
+                      "duration": 0,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-07-30T02:09:25.127Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "skipped"
+                }
+              ],
+              "id": "0c9439e96ef15aaff451-9e96944e5248e6ca2411",
+              "file": "company-management.spec.ts",
+              "line": 905,
+              "column": 3
+            },
+            {
+              "title": "C013, C014, C015 - 删除功能验证",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": -1,
+                      "parallelIndex": -1,
+                      "status": "skipped",
+                      "duration": 0,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-07-30T02:09:25.129Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "skipped"
+                }
+              ],
+              "id": "0c9439e96ef15aaff451-2b7140cef19170483a2f",
+              "file": "company-management.spec.ts",
+              "line": 957,
+              "column": 3
+            },
+            {
+              "title": "C033 - 空列表显示（只验证UI元素）",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": -1,
+                      "parallelIndex": -1,
+                      "status": "skipped",
+                      "duration": 0,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-07-30T02:09:25.132Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "skipped"
+                }
+              ],
+              "id": "0c9439e96ef15aaff451-2aeab7c331e19df4ce2d",
+              "file": "company-management.spec.ts",
+              "line": 1018,
+              "column": 3
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2025-07-30T02:07:56.618Z",
+    "duration": 88539.66500000001,
+    "expected": 5,
+    "skipped": 16,
+    "unexpected": 1,
+    "flaky": 0
+  }
+}

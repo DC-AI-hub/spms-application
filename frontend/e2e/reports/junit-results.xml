@@ -1,0 +1,144 @@
+<testsuites id="" name="" tests="22" failures="1" skipped="16" errors="0" time="88.53966500000001">
+<testsuite name="company-management.spec.ts" timestamp="2025-07-30T02:07:56.900Z" hostname="chromium" tests="22" failures="1" skipped="16" time="61.956" errors="0">
+<testcase name="公司模块测试 › C001 - 应能正确显示公司列表" classname="company-management.spec.ts" time="0.033">
+<system-out>
+<![CDATA[📍 步骤1：访问首页
+📍 步骤2：等待Keycloak登录页面
+📍 步骤3：输入登录凭据
+📍 步骤4：等待跳转到前端页面
+📍 步骤5：点击菜单图标
+📍 步骤6：点击Organization导航
+✅ 登录并导航完成
+🧪 开始测试 C001: 公司列表基本显示
+✅ C001测试通过：公司列表基本显示正常
+]]>
+</system-out>
+</testcase>
+<testcase name="公司模块测试 › C002, C003 - 验证全选功能和顶部按钮" classname="company-management.spec.ts" time="0.045">
+<system-out>
+<![CDATA[🧪 开始测试 C002, C003: 全选功能和按钮显示
+⚠️ C002, C003测试跳过： expect.toBeVisible: Error: strict mode violation: locator('button:has-text("删除选中"), button:has-text("Delete")') resolved to 2 elements:
+    1) <button disabled tabindex="-1" type="button" class="MuiButtonBase-root MuiButton-root MuiButton-outlined MuiButton-outlinedError MuiButton-sizeMedium MuiButton-outlinedSizeMedium MuiButton-colorError Mui-disabled MuiButton-root MuiButton-outlined MuiButton-outlinedError MuiButton-sizeMedium MuiButton-outlinedSizeMedium MuiButton-colorError css-1ig3gqa-MuiButtonBase-root-MuiButton-root">Bulk Delete</button> aka getByRole('button', { name: 'Bulk Delete' })
+    2) <button tabindex="0" type="button" class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textError MuiButton-sizeSmall MuiButton-textSizeSmall MuiButton-colorError MuiButton-root MuiButton-text MuiButton-textError MuiButton-sizeSmall MuiButton-textSizeSmall MuiButton-colorError css-1gbk38-MuiButtonBase-root-MuiButton-root">Delete</button> aka getByRole('button', { name: 'Delete', exact: true })
+
+Call log:
+[2m  - Expect "toBeVisible" with timeout 5000ms[22m
+[2m  - waiting for locator('button:has-text("删除选中"), button:has-text("Delete")')[22m
+
+]]>
+</system-out>
+</testcase>
+<testcase name="公司模块测试 › C029, C030 - 必填字段验证" classname="company-management.spec.ts" time="6.405">
+<system-out>
+<![CDATA[🧪 开始测试 C029, C030: 必填字段验证
+✅ C029, C030测试通过：必填验证功能正常
+]]>
+</system-out>
+</testcase>
+<testcase name="公司模块测试 › C006, C007 - 创建公司弹窗和Group类型公司" classname="company-management.spec.ts" time="14.68">
+<system-out>
+<![CDATA[🧪 开始测试 C006, C007: 创建公司弹窗和Group类型
+⚠️ C006, C007测试失败：保存没有反应
+]]>
+</system-out>
+</testcase>
+<testcase name="公司模块测试 › C008 - Business Entity类型关联验证" classname="company-management.spec.ts" time="10.624">
+<system-out>
+<![CDATA[🧪 开始测试 C008: Business Entity关联验证
+⚠️ C008测试：未找到预期的验证错误信息
+]]>
+</system-out>
+</testcase>
+<testcase name="公司模块测试 › 批量创建公司（为分页和搜索测试提供数据）" classname="company-management.spec.ts" time="30.169">
+<failure message="company-management.spec.ts:423:3 批量创建公司（为分页和搜索测试提供数据）" type="FAILURE">
+<![CDATA[  [chromium] › company-management.spec.ts:423:3 › 公司模块测试 › 批量创建公司（为分页和搜索测试提供数据） ────────────────────
+
+    Test timeout of 30000ms exceeded.
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ..\test-results\company-management-公司模块测试-批量创建公司（为分页和搜索测试提供数据）-chromium\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ..\test-results\company-management-公司模块测试-批量创建公司（为分页和搜索测试提供数据）-chromium\error-context.md
+]]>
+</failure>
+<system-out>
+<![CDATA[🧪 批量创建公司以提供测试数据（满足C005分页要求）
+🏭 创建公司: 测试公司-34602-A (Group)
+⚠️ 测试公司-34602-A 创建失败：保存没有反应
+⚠️ 测试公司-34602-A 创建失败，继续下一个
+🏭 创建公司: 测试公司-34602-B (Group)
+⚠️ 批量创建公司跳过： page.waitForTimeout: Target page, context or browser has been closed
+
+[[ATTACHMENT|..\test-results\company-management-公司模块测试-批量创建公司（为分页和搜索测试提供数据）-chromium\test-failed-1.png]]
+
+[[ATTACHMENT|..\test-results\company-management-公司模块测试-批量创建公司（为分页和搜索测试提供数据）-chromium\error-context.md]]
+]]>
+</system-out>
+</testcase>
+<testcase name="公司模块测试 › C040 - 创建后列表刷新验证" classname="company-management.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="公司模块测试 › C004 - 模糊搜索功能验证" classname="company-management.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="公司模块测试 › C005, C032 - 分页功能验证和分页大小变更" classname="company-management.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="公司模块测试 › C027 - 列表排序功能验证" classname="company-management.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="公司模块测试 › C010, C011, C012 - 公司编辑功能验证" classname="company-management.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="公司模块测试 › C009 - Vendor类型创建" classname="company-management.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="公司模块测试 › C023, C024 - 多语言列名和按钮支持" classname="company-management.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="公司模块测试 › C025 - Group类型独立性验证" classname="company-management.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="公司模块测试 › C026 - Other类型关联限制" classname="company-management.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="公司模块测试 › C028 - 状态切换验证" classname="company-management.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="公司模块测试 › C031 - 特殊字符搜索" classname="company-management.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="公司模块测试 › C034 - 创建字段完整性" classname="company-management.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="公司模块测试 › C039 - 关联公司筛选" classname="company-management.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="公司模块测试 › C016, C017, C018, C019 - 导入功能验证" classname="company-management.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="公司模块测试 › C013, C014, C015 - 删除功能验证" classname="company-management.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="公司模块测试 › C033 - 空列表显示（只验证UI元素）" classname="company-management.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+</testsuites>

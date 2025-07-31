@@ -1,0 +1,16 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.bjs-powered-by {
+  display: none !important;
+}
+
+.djs-container {
+    border-right: 1px solid gray;
+    border-top: 1px solid gray;
+}
+
+.bio-properties-panel {
+    border-top: 1px solid gray;
+}

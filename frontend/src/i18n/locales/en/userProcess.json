@@ -1,0 +1,71 @@
+{
+  "tabs": {
+    "processDefinitions": "Process Definitions",
+    "processInstances": "My Instances",
+    "userTasks": "My Tasks"
+  },
+  "processDefinitions": {
+    "title": "Process Definitions",
+    "description": "View active process definitions and start new instances",
+    "owner": "Owner",
+    "version": "Version",
+    "startButton": "Start",
+    "startDialog": {
+      "title": "Start {{process}}",
+      "description": "Are you sure you want to start this process?",
+      "cancelButton": "Cancel",
+      "confirmButton": "Confirm"
+    }
+  },
+  "processInstances": {
+    "title": "My Process Instances",
+    "description": "Monitor progress of your active process instances",
+    "table": {
+      "instanceId": "Instance ID",
+      "processName": "Process Name",
+      "startTime": "Start Time",
+      "currentStage": "Current Stage",
+      "status": "Status"
+    },
+    "dialog": {
+      "title": "Details for Instance {{id}}",
+      "stagesTitle": "Stage Progression",
+      "assigneesTitle": "Current Assignees",
+      "noAssignees": "No assignees at this stage",
+      "closeButton": "Close"
+    },
+    "notCompleted": "Not completed"
+  },
+  "userTasks": {
+    "title": "My Tasks",
+    "description": "View and complete tasks assigned to you",
+    "table": {
+      "taskTitle": "Task Title",
+      "processName": "Process Name",
+      "dueDate": "Due Date",
+      "priority": "Priority",
+      "actions": "Actions"
+    },
+    "overdue": "Overdue",
+    "overdueTooltip": "This task is past its due date",
+    "detailsTooltip": "View details",
+    "completeTooltip": "Complete task",
+    "declineTooltip": "Decline task",
+    "dialog": {
+      "title": "Task Details: {{title}}",
+      "processName": "Process Name",
+      "dueDate": "Due Date",
+      "priority": "Priority",
+      "taskDetails": "Task Details",
+      "cancelButton": "Cancel",
+      "completeButton": "Complete"
+    },
+    "declineDialog": {
+      "title": "Decline Task: {{title}}",
+      "description": "Please provide a reason for declining this task",
+      "reasonLabel": "Reason for declining",
+      "cancelButton": "Cancel",
+      "confirmButton": "Confirm Decline"
+    }
+  }
+}

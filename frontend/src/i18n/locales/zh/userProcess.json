@@ -1,0 +1,71 @@
+{
+  "tabs": {
+    "processDefinitions": "流程定义",
+    "processInstances": "我的实例",
+    "userTasks": "我的任务"
+  },
+  "processDefinitions": {
+    "title": "流程定义",
+    "description": "查看活动流程定义并启动新实例",
+    "owner": "所有者",
+    "version": "版本",
+    "startButton": "开始",
+    "startDialog": {
+      "title": "启动 {{process}}",
+      "description": "确定要启动此流程吗？",
+      "cancelButton": "取消",
+      "confirmButton": "确认"
+    }
+  },
+  "processInstances": {
+    "title": "我的流程实例",
+    "description": "监控您活动流程实例的进度",
+    "table": {
+      "instanceId": "实例ID",
+      "processName": "流程名称",
+      "startTime": "开始时间",
+      "currentStage": "当前阶段",
+      "status": "状态"
+    },
+    "dialog": {
+      "title": "实例 {{id}} 详情",
+      "stagesTitle": "阶段进度",
+      "assigneesTitle": "当前处理人",
+      "noAssignees": "此阶段无处理人",
+      "closeButton": "关闭"
+    },
+    "notCompleted": "未完成"
+  },
+  "userTasks": {
+    "title": "我的任务",
+    "description": "查看并完成分配给您的任务",
+    "table": {
+      "taskTitle": "任务标题",
+      "processName": "流程名称",
+      "dueDate": "截止日期",
+      "priority": "优先级",
+      "actions": "操作"
+    },
+    "overdue": "已逾期",
+    "overdueTooltip": "此任务已超过截止日期",
+    "detailsTooltip": "查看详情",
+    "completeTooltip": "完成任务",
+    "declineTooltip": "拒绝任务",
+    "dialog": {
+      "title": "任务详情：{{title}}",
+      "processName": "流程名称",
+      "dueDate": "截止日期",
+      "priority": "优先级",
+      "taskDetails": "任务详情",
+      "cancelButton": "取消",
+      "completeButton": "完成"
+    },
+    "declineDialog": {
+      "title": "拒绝任务：{{title}}",
+      "description": "请提供拒绝此任务的原因",
+      "reasonLabel": "拒绝原因",
+      "cancelButton": "取消",
+      "confirmButton": "确认拒绝"
+    }
+  }
+}
