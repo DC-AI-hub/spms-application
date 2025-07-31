@@ -1,0 +1,35 @@
+# Project Guid Line
+
+## Implement Guide [Force Enabled(ACT MODE)]
+When User switch to "ACT" mode , the following rules will be enforced before you begin your tasks.
+1. Please summary your plan and write into a file "Implement_Plan.md".
+2. Please write the Progress to a file "Implement_Progress.md", 
+3. Please review the "Implement_Plan.md.md" when complete each phase. 
+4. Please update the "Implement_Progress.md" when complete each phase.
+5. Please remove the "Implement_Plan.md" and "Implement_Progress.md" when complete all the plans.
+
+
+## Code Guideline
+### Generic Requirement
+1. Please write comments above each method to explain the method's purpose.
+2. Please read the practice/backend/BackendDevelopmentPractice.md & backend/ProjectBerif.md and exactly complied with the rules.
+3. Please read the practice/backend/BackendDevelopmentPractice.md & backend/ProjectBerif.md before start coding.
+
+### Backend Requirement
+1. After Completed the file change , please check the reference is correct or not (No run compiler to Check)
+2. If User question containing [UNIT_TEST_TASK], you should no modify the source code.
+3. If you trying to add a new entity , please add @Table Annotation, please add "spms_" prefix in table name.
+4. For the backend project, we are using Code First Model to upgrade the Schema to DB,DO NOT use DML in Code.
+5. If you are building the API , please define the DTO and versioning the API , if api Exists , please new Controller with the new version.
+6. Please donot invoke new object mapper lib, please map the fields in the model.
+7. when you are writing unit-tests, please split the case cover element as small as you can .
+
+### Frontend Requirement
+1. If User mentioned "frontend", the any change MUST inside "frontend" folder.
+2. Prioritize using MUI components to write front-end code [important]
+3. If something needs to Modify the i18n , please let all the translation consistain
+4. If you saw that the lables needs to add translation , please changed by the way .
+
+
+### Annotation standard
+1. Please use  "@MockitoBean" instead of "@MockBean".
